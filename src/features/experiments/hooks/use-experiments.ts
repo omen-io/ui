@@ -1,4 +1,10 @@
+import { useEffect, useMemo } from "react"
 import { usePaginatedTable } from "@/components/ui/paginated-table"
+import {
+  parsePaginatedTableSearchParams,
+  serializePaginatedTableSearchParams,
+} from "@/hooks/use-paginated-table-search-params"
+import { useSearchParams } from "react-router"
 import {
   listExperiments,
   type ExperimentOrderBy,
@@ -17,16 +23,39 @@ export type ExperimentListState = {
 }
 
 const initialState: ExperimentListState = {
-    filter: "",
-    orderBy: "date",
-    orderDirection: "desc",
-    limit: EXPERIMENT_PAGE_SIZES[0],
-    offset: 0,
+  filter: "",
+  orderBy: "date",
+  orderDirection: "desc",
+  limit: EXPERIMENT_PAGE_SIZES[0],
+  offset: 0,
 }
 
 export function useExperiments() {
-  return usePaginatedTable<ExperimentListItem, ExperimentOrderBy>(
-    initialState,
+  const [searchParams, setSearchParams] = useSearchParams()
+  const initialQuery = useMemo(
+    () =>
+      parsePaginatedTableSearchParams(searchParams, {
+        defaults: initialState,
+        orderByValues: ["date", "name", "runCount"],
+        pageSizes: EXPERIMENT_PAGE_SIZES,
+      }),
+    [searchParams],
+  )
+  const table = usePaginatedTable<ExperimentListItem, ExperimentOrderBy>(
+    initialQuery,
     listExperiments,
   )
+
+  useEffect(() => {
+    setSearchParams(
+      serializePaginatedTableSearchParams(table.query, {
+        defaults: initialState,
+        orderByValues: ["date", "name", "runCount"],
+        pageSizes: EXPERIMENT_PAGE_SIZES,
+      }),
+      { replace: true },
+    )
+  }, [setSearchParams, table.query])
+
+  return table
 }

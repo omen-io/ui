@@ -1,4 +1,10 @@
+import { useEffect, useMemo } from "react"
 import { usePaginatedTable } from "@/components/ui/paginated-table"
+import {
+  parsePaginatedTableSearchParams,
+  serializePaginatedTableSearchParams,
+} from "@/hooks/use-paginated-table-search-params"
+import { useSearchParams } from "react-router"
 import { listRuns, type RunOrderBy } from "../api"
 import type { RunListItem } from "../types"
 
@@ -13,5 +19,31 @@ const initialState = {
 }
 
 export function useRuns() {
-  return usePaginatedTable<RunListItem, RunOrderBy>(initialState, listRuns)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const initialQuery = useMemo(
+    () =>
+      parsePaginatedTableSearchParams(searchParams, {
+        defaults: initialState,
+        orderByValues: ["startedAt", "endedAt", "experimentName"],
+        pageSizes: RUN_PAGE_SIZES,
+      }),
+    [searchParams],
+  )
+  const table = usePaginatedTable<RunListItem, RunOrderBy>(
+    initialQuery,
+    listRuns,
+  )
+
+  useEffect(() => {
+    setSearchParams(
+      serializePaginatedTableSearchParams(table.query, {
+        defaults: initialState,
+        orderByValues: ["startedAt", "endedAt", "experimentName"],
+        pageSizes: RUN_PAGE_SIZES,
+      }),
+      { replace: true },
+    )
+  }, [setSearchParams, table.query])
+
+  return table
 }

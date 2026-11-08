@@ -64,7 +64,13 @@ export default function AppLayout() {
                 <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4">
                     <SidebarTrigger/>
                     <div className="text-sm font-medium">
-                        {location.pathname === "/settings" ? "Settings" : "Dashboard"}
+                        {location.pathname.startsWith("/experiments")
+                            ? "Experiments"
+                            : location.pathname.startsWith("/runs")
+                              ? "Runs"
+                              : location.pathname === "/settings"
+                                ? "Settings"
+                                : "Dashboard"}
                     </div>
                 </header>
                 <Outlet/>

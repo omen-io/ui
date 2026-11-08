@@ -64,9 +64,33 @@ src/
 ```
 
 Routes live under `src/app/routes` and compose feature-owned UI. The current
-routes are `/` (dashboard), `/experiments`, `/runs`, `/settings`, and a
-not-found fallback. The latter three pages are intentionally placeholders.
-Do not treat their copy as an implemented management workflow.
+routes are `/` (dashboard), `/experiments`, `/runs`, `/runs/new`,
+`/settings`, and a not-found fallback. The experiments and runs pages are
+fixture-backed list workflows; `/runs/new` is currently a destination
+placeholder for the future manual run form.
+
+The route/feature split is mandatory:
+
+```text
+src/app/routes/<feature>/
+├── index.tsx                 Route entry point and page composition
+└── ...                       Route-specific composition/state only
+
+src/features/<feature>/
+├── api.ts                    Feature transport boundary
+├── types.ts                  Feature transport/domain types
+├── hooks/                    Feature data/state coordination
+└── components/               Reusable feature-scoped UI components
+```
+
+`src/app/routes/<feature>/index.tsx` owns the page shell and composes the
+feature components. `src/features/<feature>/components/` owns independently
+usable UI for that feature. Do not place an entire page in the feature
+folder, and do not place reusable feature components in the route folder.
+The dashboard is the reference implementation:
+`src/app/routes/dashboard/index.tsx` composes components from
+`src/features/dashboard/components/`. The experiments page must follow the
+same structure.
 
 ## Architecture rules
 
@@ -81,6 +105,12 @@ src/features/<feature>/
 ├── components/       optional feature UI
 └── ...
 ```
+
+Feature-owned components, hooks, API functions, and types stay under the
+feature directory. Route files stay under `src/app/routes/<feature>/` and are
+responsible for composition only. This separation is required even when a
+page currently has only one component; keep the route entry point in the app
+layer so future page composition remains consistent.
 
 Feature API functions call `request` from `src/lib/http-client.ts`. They do not
 import fixture JSON, import MSW, or branch on fixture mode. Components consume
@@ -215,6 +245,6 @@ boundary separate from Vitest’s Node `setupServer` usage.
 ## Deliberate scope
 
 The current frontend does not implement a settings API, complete auth screens,
-experiment/run management screens, persistence, or a backend. Do not add
-fixture-mode branches to consumers to compensate. Add a typed feature boundary
-and matching handler first, then build UI on that contract.
+manual run creation, persistence, or a backend. Do not add fixture-mode
+branches to consumers to compensate. Add a typed feature boundary and matching
+handler first, then build UI on that contract.

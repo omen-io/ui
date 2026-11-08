@@ -2,12 +2,24 @@ export type Collection<T> = {
   items: T[]
 }
 
+export type PaginatedCollection<T> = Collection<T> & {
+  metadata: {
+    total: number
+    limit: number
+    offset: number
+  }
+}
+
 export type Experiment = {
   id: string
   name: string
   source: string
   createdAt: string
-  updatedAt: string
+  updatedAt: string | null
+}
+
+export type ExperimentListItem = Experiment & {
+  runCount: number
 }
 
 export type Variant = {

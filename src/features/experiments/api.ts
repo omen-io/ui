@@ -2,11 +2,12 @@ import { request } from "@/lib/http-client"
 import type {
   Artifact,
   ArtifactDownload,
-  Collection,
   Comparison,
   ContainerImage,
   Experiment,
+  ExperimentListItem,
   Measurement,
+  PaginatedCollection,
   Run,
   Variant,
 } from "./types"
@@ -21,8 +22,38 @@ const paths = {
   containerImages: "/api/v1/container-images",
 } as const
 
-export const listExperiments = () =>
-  request<Collection<Experiment>>(paths.experiments)
+export type ExperimentOrderBy = "date" | "name" | "runCount"
+export type OrderDirection = "asc" | "desc"
+
+export type ListExperimentsOptions = {
+  filter?: string
+  orderBy?: ExperimentOrderBy
+  orderDirection?: OrderDirection
+  limit?: number
+  offset?: number
+  signal?: AbortSignal
+}
+
+export const listExperiments = ({
+  filter = "",
+  orderBy = "date",
+  orderDirection = "desc",
+  limit = 10,
+  offset = 0,
+  signal,
+}: ListExperimentsOptions = {}) => {
+  const params = new URLSearchParams({
+    filter,
+    orderBy,
+    orderDirection,
+    limit: String(limit),
+    offset: String(offset),
+  })
+  return request<PaginatedCollection<ExperimentListItem>>(
+    `${paths.experiments}?${params.toString()}`,
+    { signal },
+  )
+}
 
 export const getExperiment = (experimentId: string) =>
   request<Experiment>(
@@ -30,7 +61,7 @@ export const getExperiment = (experimentId: string) =>
   )
 
 export const listVariants = (experimentId?: string) =>
-  request<Collection<Variant>>(
+  request<{ items: Variant[] }>(
     experimentId
       ? `${paths.experiments}/${encodeURIComponent(experimentId)}/variants`
       : paths.variants,
@@ -40,7 +71,7 @@ export const getVariant = (variantId: string) =>
   request<Variant>(`${paths.variants}/${encodeURIComponent(variantId)}`)
 
 export const listRuns = (experimentId?: string) =>
-  request<Collection<Run>>(
+  request<{ items: Run[] }>(
     experimentId
       ? `${paths.experiments}/${encodeURIComponent(experimentId)}/runs`
       : paths.runs,
@@ -50,7 +81,7 @@ export const getRun = (runId: string) =>
   request<Run>(`${paths.runs}/${encodeURIComponent(runId)}`)
 
 export const listMeasurements = (runId?: string) =>
-  request<Collection<Measurement>>(
+  request<{ items: Measurement[] }>(
     runId
       ? `${paths.runs}/${encodeURIComponent(runId)}/measurements`
       : paths.measurements,
@@ -62,7 +93,7 @@ export const getMeasurement = (measurementId: string) =>
   )
 
 export const listComparisons = () =>
-  request<Collection<Comparison>>(paths.comparisons)
+  request<{ items: Comparison[] }>(paths.comparisons)
 
 export const getComparison = (comparisonId: string) =>
   request<Comparison>(
@@ -70,13 +101,13 @@ export const getComparison = (comparisonId: string) =>
   )
 
 export const listArtifacts = () =>
-  request<Collection<Artifact>>(paths.artifacts)
+  request<{ items: Artifact[] }>(paths.artifacts)
 
 export const getArtifact = (artifactId: string) =>
   request<Artifact>(`${paths.artifacts}/${encodeURIComponent(artifactId)}`)
 
 export const listContainerImages = () =>
-  request<Collection<ContainerImage>>(paths.containerImages)
+  request<{ items: ContainerImage[] }>(paths.containerImages)
 
 export const getContainerImage = (containerImageId: string) =>
   request<ContainerImage>(

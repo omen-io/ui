@@ -31,19 +31,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { getDashboard } from "@/features/dashboard/api"
+import {
+  initialDashboardRequest,
+  postDashboard,
+} from "@/features/dashboard/api"
 import type {
-  Dashboard,
-  DashboardRunFrequency,
+  DashboardFilterState,
+  DashboardResponse,
   DashboardRunStatus,
 } from "@/features/dashboard/types"
+import { DASHBOARD_STATUSES as STATUSES } from "@/features/dashboard/types"
 import { cn } from "@/lib/utils"
-
-const STATUSES: DashboardRunStatus[] = [
-  "completed",
-  "completed_with_differences",
-  "failed",
-]
 
 const STATUS_LABELS: Record<DashboardRunStatus, string> = {
   completed: "Completed",
@@ -129,114 +127,8 @@ function DashboardError({ onRetry }: { onRetry: () => void }) {
   )
 }
 
-function getFrequencyData(
-  frequency: DashboardRunFrequency[],
-  selectedSources: Set<string>,
-  selectedStatuses: Set<DashboardRunStatus>,
-  selectedExperiments: Set<string>,
-  experiments: Dashboard["experimentRisk"]
-) {
-  const experimentsBySource = new Map<string, Set<string>>()
-  for (const experiment of experiments) {
-    const sourceExperiments =
-      experimentsBySource.get(experiment.source) ?? new Set<string>()
-    sourceExperiments.add(experiment.experimentId)
-    experimentsBySource.set(experiment.source, sourceExperiments)
-  }
-
-  const dates = [...new Set(frequency.map((item) => item.date))].sort()
-  return dates.map((date) => {
-    const row: Record<string, number | string> = { date }
-    for (const source of selectedSources) {
-      row[source] = frequency
-        .filter(
-          (item) =>
-            item.date === date &&
-            item.source === source &&
-            selectedStatuses.has(item.status) &&
-            (item.experimentId
-              ? selectedExperiments.has(item.experimentId)
-              : [...(experimentsBySource.get(item.source) ?? [])].every(
-                  (experimentId) => selectedExperiments.has(experimentId)
-                ))
-        )
-        .reduce((total, item) => total + item.count, 0)
-    }
-    return row
-  })
-}
-
-function getSourceDistribution(
-  sources: Dashboard["sourceDistribution"],
-  experiments: Dashboard["experimentRisk"],
-  selectedStatuses: Set<DashboardRunStatus>,
-  selectedExperiments: Set<string>
-) {
-  const distribution = new Map<
-    string,
-    Dashboard["sourceDistribution"][number]
-  >()
-
-  for (const source of sources) {
-    distribution.set(source.source, {
-      source: source.source,
-      runCount: 0,
-      statusCounts: {
-        completed: 0,
-        completed_with_differences: 0,
-        failed: 0,
-      },
-    })
-  }
-
-  for (const experiment of experiments) {
-    if (!selectedExperiments.has(experiment.experimentId)) continue
-    const current = distribution.get(experiment.source)
-    if (!current) continue
-
-    for (const status of STATUSES) {
-      if (selectedStatuses.has(status)) {
-        current.statusCounts[status] += experiment.statusCounts[status]
-        current.runCount += experiment.statusCounts[status]
-      }
-    }
-    distribution.set(experiment.source, current)
-  }
-
-  return [...distribution.values()]
-}
-
-function getStatusDistribution(
-  experiments: Dashboard["experimentRisk"],
-  selectedSources: Set<string>,
-  selectedExperiments: Set<string>
-) {
-  return STATUSES.map((status) => ({
-    status,
-    count: experiments
-      .filter(
-        (experiment) =>
-          selectedSources.has(experiment.source) &&
-          selectedExperiments.has(experiment.experimentId)
-      )
-      .reduce(
-        (total, experiment) => total + experiment.statusCounts[status],
-        0
-      ),
-  }))
-}
-
-function getIncompleteRuns(
-  statusCounts: Record<DashboardRunStatus, number>,
-  selectedStatuses: Set<DashboardRunStatus>
-) {
-  return [...selectedStatuses]
-    .filter((status) => status !== "completed")
-    .reduce((total, status) => total + statusCounts[status], 0)
-}
-
 export default function DashboardPage() {
-  const [dashboard, setDashboard] = useState<Dashboard | null>(null)
+  const [dashboard, setDashboard] = useState<DashboardResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [selectedStatuses, setSelectedStatuses] = useState<
@@ -252,16 +144,13 @@ export default function DashboardPage() {
     null
   )
 
-  const loadDashboard = () => {
-    getDashboard()
+  const loadDashboard = (request = initialDashboardRequest()) => {
+    postDashboard(request)
       .then((response) => {
         setDashboard(response)
-        setSelectedSources(
-          new Set(response.sourceDistribution.map((item) => item.source))
-        )
-        setSelectedExperiments(
-          new Set(response.experimentRisk.map((item) => item.experimentId))
-        )
+        setSelectedStatuses(new Set(response.metadata.filters.statuses))
+        setSelectedSources(new Set(response.metadata.filters.sources))
+        setSelectedExperiments(new Set(response.metadata.filters.experiments))
       })
       .catch(() => setError(true))
       .finally(() => setLoading(false))
@@ -286,50 +175,26 @@ export default function DashboardPage() {
   }
 
   const frequencyData = useMemo(
-    () =>
-      dashboard
-        ? getFrequencyData(
-            dashboard.runFrequency,
-            selectedSources,
-            selectedStatuses,
-            selectedExperiments,
-            dashboard.experimentRisk
-          )
-        : [],
-    [dashboard, selectedSources, selectedStatuses, selectedExperiments]
+    () => dashboard?.data.runChart ?? [],
+    [dashboard]
   )
 
   const filteredStatusData = useMemo(
     () =>
       dashboard
-        ? getStatusDistribution(
-            dashboard.experimentRisk,
-            selectedSources,
-            selectedExperiments
-          ).map((item) => ({
+        ? dashboard.data.pieChart.map((item) => ({
             name: item.status,
             value: item.count,
           }))
         : [],
-    [dashboard, selectedSources, selectedExperiments]
+    [dashboard]
   )
 
   const filteredSourceDistribution = useMemo(
-    () =>
-      dashboard
-        ? getSourceDistribution(
-            dashboard.sourceDistribution,
-            dashboard.experimentRisk,
-            selectedStatuses,
-            selectedExperiments
-          )
-        : [],
-    [dashboard, selectedExperiments, selectedStatuses]
+    () => (dashboard ? dashboard.data.sourceChart : []),
+    [dashboard]
   )
-  const hasSelection =
-    selectedStatuses.size > 0 &&
-    selectedSources.size > 0 &&
-    selectedExperiments.size > 0
+  const hasSelection = dashboard?.metadata.hasSelection ?? false
   const orderedSources = useMemo(
     () =>
       filteredSourceDistribution
@@ -345,7 +210,9 @@ export default function DashboardPage() {
   )
   const currentSourcePage = Math.min(sourcePage, sourcePageCount - 1)
   const sourceColorIndex = new Map(
-    orderedSources.map((source, index) => [source.source, index])
+    (dashboard?.metadata.availableFilters.sources ?? []).map(
+      (source, index) => [source, index]
+    )
   )
   const lineChartConfig = Object.fromEntries(
     [...selectedSources].map((source) => [
@@ -364,13 +231,20 @@ export default function DashboardPage() {
   ) as Record<string, ChartConfig[string]>
   const enableAllFilters = () => {
     if (!dashboard) return
-    setSelectedStatuses(new Set(STATUSES))
-    setSelectedSources(
-      new Set(dashboard.sourceDistribution.map((item) => item.source))
-    )
-    setSelectedExperiments(
-      new Set(dashboard.experimentRisk.map((item) => item.experimentId))
-    )
+    const filters = {
+      statuses: [...dashboard.metadata.availableFilters.statuses],
+      sources: dashboard.metadata.availableFilters.sources,
+      experiments: dashboard.metadata.availableFilters.experiments.map(
+        (experiment) => experiment.experimentId
+      ),
+    }
+    setSelectedStatuses(new Set(filters.statuses))
+    setSelectedSources(new Set(filters.sources))
+    setSelectedExperiments(new Set(filters.experiments))
+    void postDashboard({
+      filters,
+      ordering: dashboard.metadata.ordering,
+    }).then(setDashboard)
     setSourcePage(0)
   }
 
@@ -379,32 +253,56 @@ export default function DashboardPage() {
     setSelectedSources(new Set())
     setSelectedExperiments(new Set())
     setSourcePage(0)
+    if (dashboard) {
+      void postDashboard({
+        filters: { statuses: [], sources: [], experiments: [] },
+        ordering: dashboard.metadata.ordering,
+      }).then(setDashboard)
+    }
+  }
+
+  const refreshWithFilters = (filters: DashboardFilterState) => {
+    setSelectedStatuses(new Set(filters.statuses))
+    setSelectedSources(new Set(filters.sources))
+    setSelectedExperiments(new Set(filters.experiments))
+    if (dashboard) {
+      void postDashboard({
+        filters,
+        ordering: dashboard.metadata.ordering,
+      }).then(setDashboard)
+    }
   }
 
   const toggleStatus = (status: DashboardRunStatus) => {
-    setSelectedStatuses((current) => {
-      const next = new Set(current)
-      if (next.has(status)) next.delete(status)
-      else next.add(status)
-      return next
+    const statuses = new Set(selectedStatuses)
+    if (statuses.has(status)) statuses.delete(status)
+    else statuses.add(status)
+    refreshWithFilters({
+      statuses: [...statuses],
+      sources: [...selectedSources],
+      experiments: [...selectedExperiments],
     })
   }
 
   const toggleSource = (source: string) => {
-    setSelectedSources((current) => {
-      const next = new Set(current)
-      if (next.has(source)) next.delete(source)
-      else next.add(source)
-      return next
+    const sources = new Set(selectedSources)
+    if (sources.has(source)) sources.delete(source)
+    else sources.add(source)
+    refreshWithFilters({
+      statuses: [...selectedStatuses],
+      sources: [...sources],
+      experiments: [...selectedExperiments],
     })
   }
 
   const toggleExperiment = (experimentId: string) => {
-    setSelectedExperiments((current) => {
-      const next = new Set(current)
-      if (next.has(experimentId)) next.delete(experimentId)
-      else next.add(experimentId)
-      return next
+    const experiments = new Set(selectedExperiments)
+    if (experiments.has(experimentId)) experiments.delete(experimentId)
+    else experiments.add(experimentId)
+    refreshWithFilters({
+      statuses: [...selectedStatuses],
+      sources: [...selectedSources],
+      experiments: [...experiments],
     })
   }
 
@@ -638,7 +536,7 @@ export default function DashboardPage() {
               </CardDescription>
             </div>
             <Badge variant="outline">
-              {dashboard.summary.totalRunCount} total runs
+              {dashboard.metadata.summary.totalRunCount} total runs
             </Badge>
           </CardHeader>
           <CardContent>
@@ -707,98 +605,63 @@ export default function DashboardPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {dashboard.experimentRisk
-                  .filter((experiment) =>
-                    selectedSources.has(experiment.source)
-                  )
-                  .map((experiment) => ({
-                    ...experiment,
-                    notCompletedRuns: getIncompleteRuns(
-                      experiment.statusCounts,
-                      selectedStatuses
-                    ),
-                  }))
-                  .sort((a, b) => {
-                    const percentageA =
-                      a.totalRuns === 0 ? 0 : a.notCompletedRuns / a.totalRuns
-                    const percentageB =
-                      b.totalRuns === 0 ? 0 : b.notCompletedRuns / b.totalRuns
-                    return (
-                      percentageB - percentageA ||
-                      b.notCompletedRuns - a.notCompletedRuns ||
-                      a.name.localeCompare(b.name) ||
-                      a.experimentId.localeCompare(b.experimentId)
-                    )
-                  })
-                  .map((experiment) => {
-                    const percentage =
-                      experiment.totalRuns === 0
-                        ? 0
-                        : (experiment.notCompletedRuns / experiment.totalRuns) *
-                          100
-                    return (
-                      <TableRow
-                        aria-pressed={selectedExperiments.has(
-                          experiment.experimentId
-                        )}
-                        className={cn(
-                          "cursor-pointer focus-visible:bg-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary",
-                          !selectedExperiments.has(experiment.experimentId) &&
-                            "opacity-45"
-                        )}
-                        key={experiment.experimentId}
-                        onClick={() =>
+                {dashboard.data.experimentChart.rows.map((experiment) => {
+                  const percentage = experiment.incompletePercentage * 100
+                  return (
+                    <TableRow
+                      aria-pressed={selectedExperiments.has(
+                        experiment.experimentId
+                      )}
+                      className={cn(
+                        "cursor-pointer focus-visible:bg-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary",
+                        !selectedExperiments.has(experiment.experimentId) &&
+                          "opacity-45"
+                      )}
+                      key={experiment.experimentId}
+                      onClick={() => toggleExperiment(experiment.experimentId)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault()
                           toggleExperiment(experiment.experimentId)
                         }
-                        onKeyDown={(event) => {
-                          if (event.key === "Enter" || event.key === " ") {
-                            event.preventDefault()
-                            toggleExperiment(experiment.experimentId)
-                          }
-                        }}
-                        role="button"
-                        tabIndex={0}
-                      >
-                        <TableCell>
-                          <div className="font-medium">{experiment.name}</div>
-                          <div className="mt-1 text-muted-foreground sm:hidden">
-                            {experiment.source}
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden text-muted-foreground sm:table-cell">
+                      }}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      <TableCell>
+                        <div className="font-medium">{experiment.name}</div>
+                        <div className="mt-1 text-muted-foreground sm:hidden">
                           {experiment.source}
-                        </TableCell>
-                        <TableCell>
-                          <Progress
-                            aria-label={`${experiment.name}: ${experiment.notCompletedRuns} of ${experiment.totalRuns} incomplete runs`}
-                            className="[&_[data-slot=progress-indicator]]:bg-destructive"
-                            value={percentage}
-                          />
-                          <span className="mt-1 block text-[11px] text-muted-foreground">
-                            {Math.round(percentage)}% of {experiment.totalRuns}{" "}
-                            runs
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-right font-semibold tabular-nums">
-                          <span className="inline-flex items-center gap-1">
-                            {experiment.notCompletedRuns > 0 && (
-                              <TrendingDown className="size-3 text-destructive" />
-                            )}
-                            {experiment.notCompletedRuns}
-                          </span>
-                        </TableCell>
-                      </TableRow>
-                    )
-                  })}
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden text-muted-foreground sm:table-cell">
+                        {experiment.source}
+                      </TableCell>
+                      <TableCell>
+                        <Progress
+                          aria-label={`${experiment.name}: ${experiment.incompleteCount} of ${experiment.totalRuns} incomplete runs`}
+                          className="[&_[data-slot=progress-indicator]]:bg-destructive"
+                          value={percentage}
+                        />
+                        <span className="mt-1 block text-[11px] text-muted-foreground">
+                          {Math.round(percentage)}% of {experiment.totalRuns}{" "}
+                          runs
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right font-semibold tabular-nums">
+                        <span className="inline-flex items-center gap-1">
+                          {experiment.incompleteCount > 0 && (
+                            <TrendingDown className="size-3 text-destructive" />
+                          )}
+                          {experiment.incompleteCount}
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
               </TableBody>
             </Table>
-            {dashboard.experimentRisk.every(
-              (experiment) =>
-                !selectedSources.has(experiment.source) ||
-                !selectedExperiments.has(experiment.experimentId) ||
-                getIncompleteRuns(experiment.statusCounts, selectedStatuses) ===
-                  0
-            ) && (
+            {dashboard.data.experimentChart.emptyState && (
               <div className="border border-dashed p-6 text-center text-sm text-muted-foreground">
                 No incomplete runs match the selected filters.
               </div>

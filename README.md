@@ -38,16 +38,34 @@ dashboard records only when they exercise a distinct chart, summary, status,
 relationship, or UI state. Never add passwords, password hashes, refresh
 tokens, signing keys, credentials, file contents, or production artifact URLs.
 
-The dashboard uses the status distribution and source distribution as global
-filters. Selecting or clearing a status in the donut/legend or a source tile
-updates the daily multi-series line chart and the experiment-risk table. The
-risk table counts only selected non-completed statuses, so selecting only
-`completed` intentionally produces an empty risk state. The dashboard fixture's
-`runFrequency` rows should reconcile with `summary.totalRunCount` and the
-per-source/status totals, while each `experimentRisk.statusCounts` record
-provides the detail needed for filtered incomplete-run ranking. Experiments
-are ordered by selected incomplete-run percentage, then incomplete count, then
-stable experiment name/id tie-breakers.
+The dashboard uses `POST /api/v1/dashboard` for the initial load and every
+filter change. The request always contains `filters` (`statuses`, `sources`,
+and `experiments`) plus explicit `ordering`. The fixture handler performs the
+same projection that a backend service will perform; the response is shaped as
+`{ metadata, data }`, where `data` contains `pieChart`, `sourceChart`,
+`runChart`, and `experimentChart`.
+
+Dashboard filter behavior is intentionally widget-specific and must not be
+normalized without a product decision:
+
+| Control              | Backend calculation                                                                                                                                                                                                      | UI effect                                                                                                                                                                                      |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Status selection     | The pie counts use selected sources and experiments, but ignore selected statuses. Source counts and incomplete experiment counts use selected statuses. Run-frequency rows use selected status, source, and experiment. | Selected status sectors and legend rows are enabled; cleared statuses are dimmed. The line chart is replaced by an empty state unless at least one status, source, and experiment is selected. |
+| Source selection     | Pie, source, run, and experiment projections use selected sources where their existing widget rules require it.                                                                                                          | Source tiles are dimmed when cleared. The line chart series are the selected sources. The risk table removes rows from cleared sources.                                                        |
+| Experiment selection | Pie and source projections use selected experiments. Run-frequency rows use selected experiments, including the existing all-experiments rule for aggregate rows.                                                        | Experiment rows remain visible for selected sources, but cleared experiments are dimmed and unpressed. Their selection still affects pie/source/run values.                                    |
+| Enable all           | Selects every available status, source, and experiment.                                                                                                                                                                  | Recalculates all four sections and resets the source carousel to page one.                                                                                                                     |
+| Disable all          | Clears every selection.                                                                                                                                                                                                  | Recalculates zero/empty projections, dims all controls, replaces the line chart, and resets the source carousel to page one.                                                                   |
+
+The `metadata` section returns available filters, the normalized current
+selection, the ordering configuration, `hasSelection`, and the dashboard
+summary. `sourceChart` retains every known source, including zero-count
+sources, and is ordered by descending filtered run count. `experimentChart.rows`
+is source-filtered and ordered by incomplete percentage descending, incomplete
+count descending, experiment name ascending, then experiment ID ascending. Its
+`emptyState` flag matches the current “No incomplete runs” condition. The
+responsive source carousel (four desktop cards, two small-screen cards), page
+state, pointer swipes, and line-chart brush are presentation concerns and
+remain in React.
 
 Source cards are sorted by run count and displayed in a responsive carousel:
 four cards per desktop page and two cards per smaller-screen page. Previous and
@@ -64,9 +82,9 @@ introduced.
 Fixture mode currently handles the complete transport surface represented by
 these fixtures:
 
-- `GET /api/v1/dashboard`
+- `POST /api/v1/dashboard`
 - `POST /api/v1/auth/login`, `POST /api/v1/auth/refresh`, `GET
-  /api/v1/auth/me`, and `GET /api/v1/auth/roles`
+/api/v1/auth/me`, and `GET /api/v1/auth/roles`
 - Experiment, variant, run, measurement, comparison, artifact, and
   container-image collection and detail endpoints under `/api/v1`
 - Artifact presigned URLs and deterministic fixture-storage file downloads

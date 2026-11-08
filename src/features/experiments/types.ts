@@ -26,6 +26,7 @@ export type Variant = {
   id: string
   experimentId: string
   containerImageId: string | null
+  containerImage?: ContainerImage | null
   type: string
   key: string
   callable: string

@@ -204,6 +204,17 @@ const detail = <T extends { id: string }>(
   return item ? HttpResponse.json(item) : notFound(resource)
 }
 
+const containerImageById = new Map(
+  containerImages.items.map((image) => [image.id, image]),
+)
+
+const withContainerImage = (variant: (typeof variants.items)[number]) => ({
+  ...variant,
+  containerImage: variant.containerImageId
+    ? (containerImageById.get(variant.containerImageId) ?? null)
+    : null,
+})
+
 export const experimentHandlers = [
   http.get("*/api/v1/experiments", ({ request }) => listExperiments(request)),
   http.get("*/api/v1/experiments/:experimentId", ({ params }) =>
@@ -213,7 +224,7 @@ export const experimentHandlers = [
     collection(
       variants.items.filter(
         (variant) => variant.experimentId === String(params.experimentId),
-      ),
+      ).map(withContainerImage),
     ),
   ),
   http.get("*/api/v1/experiments/:experimentId/runs", ({ params }) =>
@@ -223,7 +234,9 @@ export const experimentHandlers = [
       ),
     ),
   ),
-  http.get("*/api/v1/variants", () => collection(variants.items)),
+  http.get("*/api/v1/variants", () =>
+    collection(variants.items.map(withContainerImage)),
+  ),
   http.get("*/api/v1/variants/:variantId", ({ params }) =>
     detail(variants.items, String(params.variantId), "Variant"),
   ),

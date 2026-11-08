@@ -55,26 +55,29 @@ export const listExperiments = ({
   )
 }
 
-export const getExperiment = (experimentId: string) =>
+export const getExperiment = (experimentId: string, signal?: AbortSignal) =>
   request<Experiment>(
     `${paths.experiments}/${encodeURIComponent(experimentId)}`,
+    { signal },
   )
 
-export const listVariants = (experimentId?: string) =>
+export const listVariants = (experimentId?: string, signal?: AbortSignal) =>
   request<{ items: Variant[] }>(
     experimentId
       ? `${paths.experiments}/${encodeURIComponent(experimentId)}/variants`
       : paths.variants,
+    { signal },
   )
 
 export const getVariant = (variantId: string) =>
   request<Variant>(`${paths.variants}/${encodeURIComponent(variantId)}`)
 
-export const listRuns = (experimentId?: string) =>
+export const listRuns = (experimentId?: string, signal?: AbortSignal) =>
   request<{ items: Run[] }>(
     experimentId
       ? `${paths.experiments}/${encodeURIComponent(experimentId)}/runs`
       : paths.runs,
+    { signal },
   )
 
 export const getRun = (runId: string) =>

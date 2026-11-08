@@ -26,10 +26,9 @@ that are valid for that resource's state.
   timestamps.
 - Summary cards for total runs, completed/failed/in-progress runs, variants,
   and latest activity.
-- Run list with status, input artifact, start/end time, duration, and
-  measurement count.
-- Filters for run status and time range; keep filtering and ordering in the
-  backend query.
+- Run list with run id, status, started at and ended at; with a limit of 5 runs.
+- See all runs link at the very end of the run list that will redirect to the runs view with the appropriate experiment
+  filters to match only the runs of the current experiment detail.
 - Empty, loading, not-found, and transport-error states.
 
 **Navigation:** selecting a run goes to `/experiments/:experimentId/runs/:runId`.

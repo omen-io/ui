@@ -1,4 +1,5 @@
 import { AlertCircle, RotateCcw, TestTubes } from "lucide-react"
+import { Link } from "react-router"
 import { Button } from "@/components/ui/button"
 import { PaginatedTableSpacerRows } from "@/components/ui/paginated-table"
 import {
@@ -102,7 +103,14 @@ export function ExperimentsTable({
       <TableBody>
         {items.map((experiment) => (
           <TableRow key={experiment.id}>
-            <TableCell className="font-medium">{experiment.name}</TableCell>
+            <TableCell className="font-medium">
+              <Link
+                className="underline-offset-4 hover:underline"
+                to={`/experiments/${encodeURIComponent(experiment.id)}`}
+              >
+                {experiment.name}
+              </Link>
+            </TableCell>
             <TableCell className="hidden font-mono text-[11px] text-muted-foreground md:table-cell">
               {experiment.id}
             </TableCell>

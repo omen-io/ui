@@ -166,6 +166,7 @@ export function ExperimentDetail({
   const activeRuns = runs.filter(
     (run) => run.status === "in_progress" || run.status === "pending"
   ).length
+  const recentRuns = runs.slice(0, 5)
   const copyId = async () => {
     await navigator.clipboard.writeText(experiment.id)
     setCopied(true)
@@ -237,7 +238,7 @@ export function ExperimentDetail({
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-        <Card>
+        <Card className="h-full">
           <CardHeader>
             <CardTitle>Recent runs</CardTitle>
             <CardDescription>
@@ -245,70 +246,80 @@ export function ExperimentDetail({
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
-            {runs.length === 0 ? (
-              <div className="px-4 pb-5 text-sm text-muted-foreground">
-                No runs have been recorded yet.
-              </div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Run</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="hidden sm:table-cell">
-                      Started
-                    </TableHead>
-                    <TableHead className="hidden md:table-cell">
-                      Ended
-                    </TableHead>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Run</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="hidden sm:table-cell">
+                    Started
+                  </TableHead>
+                  <TableHead className="hidden md:table-cell">Ended</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {recentRuns.map((run) => (
+                  <TableRow className="h-10" key={run.id}>
+                    <TableCell className="font-mono text-[11px]">
+                      <Link
+                        className="underline-offset-4 hover:underline"
+                        to={`/experiments/${encodeURIComponent(experiment.id)}/runs/${encodeURIComponent(run.id)}`}
+                      >
+                        {run.id.slice(0, 8)}…
+                      </Link>
+                    </TableCell>
+                    <TableCell>
+                      <StatusBadge status={run.status} />
+                    </TableCell>
+                    <TableCell className="hidden text-muted-foreground sm:table-cell">
+                      {formatDate(run.startedAt)}
+                    </TableCell>
+                    <TableCell className="hidden text-muted-foreground md:table-cell">
+                      {formatDate(run.endedAt)}
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {runs.slice(0, 5).map((run) => (
-                    <TableRow key={run.id}>
-                      <TableCell className="font-mono text-[11px]">
-                        <Link
-                          className="underline-offset-4 hover:underline"
-                          to={`/experiments/${encodeURIComponent(experiment.id)}/runs/${encodeURIComponent(run.id)}`}
-                        >
-                          {run.id.slice(0, 8)}…
-                        </Link>
-                      </TableCell>
-                      <TableCell>
-                        <StatusBadge status={run.status} />
-                      </TableCell>
-                      <TableCell className="hidden text-muted-foreground sm:table-cell">
-                        {formatDate(run.startedAt)}
-                      </TableCell>
-                      <TableCell className="hidden text-muted-foreground md:table-cell">
-                        {formatDate(run.endedAt)}
+                ))}
+                {Array.from(
+                  { length: Math.max(0, 5 - recentRuns.length) },
+                  (_, index) => (
+                    <TableRow
+                      aria-hidden={recentRuns.length > 0 || index > 0}
+                      className="h-10"
+                      key={`empty-${index}`}
+                    >
+                      <TableCell
+                        className="text-sm text-muted-foreground"
+                        colSpan={4}
+                      >
+                        {recentRuns.length === 0 && index === 0
+                          ? "No runs have been recorded yet."
+                          : null}
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
+                  )
+                )}
+              </TableBody>
+            </Table>
           </CardContent>
-          {runs.length > 5 && (
-            <div className="border-t px-4 py-3">
-              <Link
-                className="text-xs font-medium text-primary hover:underline"
-                to={`/runs?filter=${encodeURIComponent(`experiment:${experiment.name}`)}`}
-              >
-                See all {runs.length} runs →
-              </Link>
-            </div>
-          )}
+          <div className="border-t px-4 py-3">
+            <Link
+              className="text-xs font-medium text-primary hover:underline"
+              to={`/runs?filter=${encodeURIComponent(`experiment:${experiment.name}`)}`}
+            >
+              {runs.length > 5 ? `See all ${runs.length} runs` : "See all runs"}{" "}
+              →
+            </Link>
+          </div>
         </Card>
 
-        <Card>
+        <Card className="h-full">
           <CardHeader>
             <CardTitle>Experiment properties</CardTitle>
             <CardDescription>
               Identity and lifecycle information.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="flex h-full flex-col gap-4">
             {[
               { label: "Source", value: experiment.source, icon: GitBranch },
               {
@@ -330,7 +341,7 @@ export function ExperimentDetail({
                 </div>
               </div>
             ))}
-            <div className="border-t pt-4">
+            <div className="mt-auto border-t pt-4">
               <p className="text-muted-foreground">Experiment ID</p>
               <p className="mt-1 font-mono text-[11px] break-all">
                 {experiment.id}

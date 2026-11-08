@@ -1,3 +1,5 @@
+import type { Status } from "@/components/ui/status-tag"
+
 export type Collection<T> = {
   items: T[]
 }
@@ -38,7 +40,7 @@ export type Run = {
   experimentId: string
   inputFileId: string
   inputFormat: string
-  status: string
+  status: Status
   startedAt: string | null
   endedAt: string | null
   createdAt: string
@@ -51,7 +53,7 @@ export type Measurement = {
   variantId: string
   outputFileId: string | null
   outputFormat: string
-  status: string
+  status: Status
   error: string | null
   startedAt: string
   endedAt: string | null

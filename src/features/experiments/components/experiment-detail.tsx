@@ -51,6 +51,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { StatusTag } from "@/components/ui/status-tag"
 import { HttpError } from "@/lib/http-client"
 import type { Experiment, Run, Variant } from "../types"
 
@@ -71,16 +72,6 @@ const imageReference = (variant: Variant) => {
   return `${image.registry}/${image.repository}${
     image.tag ? `:${image.tag}` : `@${image.digest}`
   }`
-}
-
-function StatusBadge({ status }: { status: string }) {
-  const variant =
-    status === "failed"
-      ? "destructive"
-      : status === "completed" || status === "completed_with_differences"
-        ? "secondary"
-        : "outline"
-  return <Badge variant={variant}>{titleCase(status)}</Badge>
 }
 
 function DetailSkeleton() {
@@ -163,9 +154,7 @@ export function ExperimentDetail({
       run.status === "completed" || run.status === "completed_with_differences"
   ).length
   const failedRuns = runs.filter((run) => run.status === "failed").length
-  const activeRuns = runs.filter(
-    (run) => run.status === "in_progress" || run.status === "pending"
-  ).length
+  const activeRuns = runs.filter((run) => run.status === "in_progress").length
   const recentRuns = runs.slice(0, 5)
   const copyId = async () => {
     await navigator.clipboard.writeText(experiment.id)
@@ -269,7 +258,7 @@ export function ExperimentDetail({
                       </Link>
                     </TableCell>
                     <TableCell>
-                      <StatusBadge status={run.status} />
+                      <StatusTag status={run.status} />
                     </TableCell>
                     <TableCell className="hidden text-muted-foreground sm:table-cell">
                       {formatDate(run.startedAt)}

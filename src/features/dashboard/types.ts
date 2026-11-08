@@ -1,11 +1,8 @@
-export type DashboardRunStatus =
-  "completed" | "completed_with_differences" | "failed"
+import { STATUS_VALUES, type Status } from "@/components/ui/status-tag"
 
-export const DASHBOARD_STATUSES: DashboardRunStatus[] = [
-  "completed",
-  "completed_with_differences",
-  "failed",
-]
+export type DashboardRunStatus = Status
+
+export const DASHBOARD_STATUSES: DashboardRunStatus[] = [...STATUS_VALUES]
 
 export type DashboardSourceSummary = {
   source: string

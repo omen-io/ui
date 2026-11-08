@@ -15,10 +15,11 @@ describe("projectDashboard", () => {
     const response = projectDashboard(fixture, all)
 
     expect(response.metadata.hasSelection).toBe(true)
-    expect(response.metadata.summary.totalRunCount).toBe(21)
+    expect(response.metadata.summary.totalRunCount).toBe(22)
     expect(response.data.pieChart).toEqual([
       { status: "completed", count: 7 },
       { status: "completed_with_differences", count: 8 },
+      { status: "in_progress", count: 1 },
       { status: "failed", count: 6 },
     ])
     expect(response.data.sourceChart.map((source) => source.source)).toEqual([
@@ -43,7 +44,9 @@ describe("projectDashboard", () => {
       filters: { ...all.filters, statuses: ["completed"] },
     })
 
-    expect(response.data.pieChart.map((item) => item.count)).toEqual([7, 8, 6])
+    expect(response.data.pieChart.map((item) => item.count)).toEqual([
+      7, 8, 1, 6,
+    ])
     expect(response.data.sourceChart.map((source) => source.runCount)).toEqual([
       2, 2, 1, 1, 1,
     ])
@@ -73,6 +76,7 @@ describe("projectDashboard", () => {
       statusCounts: {
         completed: 0,
         completed_with_differences: 0,
+        in_progress: 0,
         failed: 0,
       },
     })
@@ -99,12 +103,14 @@ describe("projectDashboard", () => {
     })
 
     expect(response.metadata.hasSelection).toBe(false)
-    expect(response.data.pieChart.map((item) => item.count)).toEqual([0, 0, 0])
+    expect(response.data.pieChart.map((item) => item.count)).toEqual([
+      0, 0, 0, 0,
+    ])
     expect(
       response.data.sourceChart.every((source) => source.runCount === 0)
     ).toBe(true)
     expect(response.data.experimentChart.rows).toEqual([])
     expect(response.data.experimentChart.emptyState).toBe(true)
-    expect(STATUSES).toHaveLength(3)
+    expect(STATUSES).toHaveLength(4)
   })
 })

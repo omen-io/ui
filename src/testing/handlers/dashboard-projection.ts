@@ -10,6 +10,7 @@ import type {
 export const STATUSES: DashboardRunStatus[] = [
   "completed",
   "completed_with_differences",
+  "in_progress",
   "failed",
 ]
 
@@ -67,6 +68,7 @@ function getSourceDistribution(
         statusCounts: {
           completed: 0,
           completed_with_differences: 0,
+          in_progress: 0,
           failed: 0,
         },
       },

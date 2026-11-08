@@ -164,8 +164,18 @@ Current feature APIs use these provisional paths:
 
 Collection responses use `{ "items": [...] }`; detail responses are resource
 objects. Transport fields are camelCase, timestamps are ISO 8601 UTC strings,
-and nullable values are explicit JSON `null`. Status, type, and format values
-remain strings until the backend contract makes a closed enum appropriate.
+and nullable values are explicit JSON `null`. Status values use this shared
+four-value contract wherever a run or measurement status is displayed:
+
+| Value | Display tag | Color |
+| --- | --- | --- |
+| `completed` | `COMP` | Green |
+| `completed_with_differences` | `DIFF` | Orange |
+| `in_progress` | `PEND` | Yellow |
+| `failed` | `FAIL` | Red |
+
+Other type and format values remain strings until the backend contract makes a
+closed enum appropriate.
 
 The experiment fixtures form one canonical graph. Every variant resolves to an
 experiment, every run to an experiment and input artifact, every measurement
@@ -210,7 +220,8 @@ The filter rules are intentionally widget-specific:
 | Disable all | Clears all values, produces zero/empty projections, and resets the carousel. |
 
 `metadata.hasSelection` is true only when at least one status, source, and
-experiment are selected. Source rows retain known sources at zero count.
+experiment are selected. The status filter includes all four standard status
+values. Source rows retain known sources at zero count.
 Experiment rows sort by incomplete percentage descending, incomplete count
 descending, name ascending, then ID ascending. The source carousel shows four
 cards on larger screens and two on small screens; navigation is separate from

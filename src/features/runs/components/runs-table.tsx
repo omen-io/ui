@@ -1,4 +1,5 @@
 import { AlertCircle, RotateCcw, Play } from "lucide-react"
+import { StatusTag } from "@/components/ui/status-tag"
 import { Button } from "@/components/ui/button"
 import { PaginatedTableSpacerRows } from "@/components/ui/paginated-table"
 import {
@@ -112,7 +113,9 @@ export function RunsTable({
             <TableCell className="text-muted-foreground">
               {run.experimentSource}
             </TableCell>
-            <TableCell>{run.status}</TableCell>
+            <TableCell>
+              <StatusTag status={run.status} />
+            </TableCell>
             <TableCell className="text-muted-foreground">
               {formatDate(run.startedAt)}
             </TableCell>

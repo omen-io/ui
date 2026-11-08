@@ -1,8 +1,8 @@
 {
   "summary": {
     "experimentCount": 5,
-    "totalRunCount": 21,
-    "notCompletedRunCount": 14
+    "totalRunCount": 22,
+    "notCompletedRunCount": 15
   },
   "runStatusDistribution": [
     {
@@ -14,6 +14,10 @@
       "count": 8
     },
     {
+      "status": "in_progress",
+      "count": 1
+    },
+    {
       "status": "failed",
       "count": 6
     }
@@ -21,10 +25,11 @@
   "sourceDistribution": [
     {
       "source": "sales-worker-v3",
-      "runCount": 6,
+      "runCount": 7,
       "statusCounts": {
         "completed": 2,
         "completed_with_differences": 2,
+        "in_progress": 1,
         "failed": 2
       }
     },
@@ -34,6 +39,7 @@
       "statusCounts": {
         "completed": 1,
         "completed_with_differences": 5,
+        "in_progress": 0,
         "failed": 3
       }
     },
@@ -43,6 +49,7 @@
       "statusCounts": {
         "completed": 1,
         "completed_with_differences": 0,
+        "in_progress": 0,
         "failed": 0
       }
     },
@@ -52,6 +59,7 @@
       "statusCounts": {
         "completed": 2,
         "completed_with_differences": 0,
+        "in_progress": 0,
         "failed": 1
       }
     },
@@ -61,6 +69,7 @@
       "statusCounts": {
         "completed": 1,
         "completed_with_differences": 1,
+        "in_progress": 0,
         "failed": 0
       }
     }
@@ -93,6 +102,13 @@
       "status": "completed",
       "count": 1,
       "experimentId": "00000000-0000-0000-0000-000000000003"
+    },
+    {
+      "date": "2029-12-05",
+      "source": "sales-worker-v3",
+      "status": "in_progress",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000001"
     },
     {
       "date": "2029-12-06",
@@ -219,10 +235,11 @@
       "experimentId": "00000000-0000-0000-0000-000000000001",
       "name": "Checkout ranking",
       "source": "sales-worker-v3",
-      "totalRuns": 6,
+      "totalRuns": 7,
       "statusCounts": {
         "completed": 2,
         "completed_with_differences": 2,
+        "in_progress": 1,
         "failed": 2
       }
     },
@@ -234,6 +251,7 @@
       "statusCounts": {
         "completed": 1,
         "completed_with_differences": 5,
+        "in_progress": 0,
         "failed": 3
       }
     },
@@ -245,6 +263,7 @@
       "statusCounts": {
         "completed": 1,
         "completed_with_differences": 0,
+        "in_progress": 0,
         "failed": 0
       }
     },
@@ -256,6 +275,7 @@
       "statusCounts": {
         "completed": 2,
         "completed_with_differences": 0,
+        "in_progress": 0,
         "failed": 1
       }
     },
@@ -267,6 +287,7 @@
       "statusCounts": {
         "completed": 1,
         "completed_with_differences": 1,
+        "in_progress": 0,
         "failed": 0
       }
     }

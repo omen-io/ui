@@ -80,6 +80,10 @@ control or candidate and route to the comparison detail.
 **Suggested content:**
 
 - Control/candidate identity, variant names, statuses, and artifact formats.
+
+Run and measurement status tags use the shared standard: `completed` renders as
+`COMP` in green, `completed_with_differences` as `DIFF` in orange,
+`in_progress` as `PEND` in yellow, and `failed` as `FAIL` in red.
 - Diff viewer with syntax-aware rendering where possible and a plain-text
   fallback for unsupported formats.
 - Summary metrics for additions, removals, changed values, and domain-specific

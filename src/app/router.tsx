@@ -1,10 +1,10 @@
 import {createBrowserRouter} from "react-router"
 import AppLayout from "@/app/routes/app-layout"
 import DashboardRoute from "@/app/routes/dashboard"
-import NotFoundPage from "@/app/routes/not-found-page"
-import SettingsPage from "@/app/routes/settings-page"
-import ExperimentsPage from "@/app/routes/experiments-page.tsx";
-import RunsPage from "@/app/routes/runs-page.tsx";
+import NotFoundPage from "@/app/routes/errors/not-found.tsx"
+import SettingsPage from "@/app/routes/settings"
+import ExperimentsPage from "@/app/routes/experiments";
+import RunsPage from "@/app/routes/runs";
 
 export const router = createBrowserRouter([
     {

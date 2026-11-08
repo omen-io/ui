@@ -1,6 +1,6 @@
 import {createBrowserRouter} from "react-router"
 import AppLayout from "@/app/routes/app-layout"
-import HomePage from "@/app/routes/home-page"
+import DashboardRoute from "@/app/routes/dashboard"
 import NotFoundPage from "@/app/routes/not-found-page"
 import SettingsPage from "@/app/routes/settings-page"
 import ExperimentsPage from "@/app/routes/experiments-page.tsx";
@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                Component: HomePage,
+                Component: DashboardRoute,
             },
             {
                 path: "settings",

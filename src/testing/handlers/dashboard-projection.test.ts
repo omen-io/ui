@@ -5,7 +5,7 @@ import {
   projectDashboard,
   STATUSES,
 } from "@/testing/handlers/dashboard-projection"
-import type { Dashboard, DashboardRequest } from "./types"
+import type { Dashboard, DashboardRequest } from "@/features/dashboard/types"
 
 const fixture = dashboard as Dashboard
 const all = defaultDashboardRequest(fixture)

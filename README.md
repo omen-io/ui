@@ -2,6 +2,21 @@
 
 This is a template for a new Vite project with React, TypeScript, and shadcn/ui.
 
+## Application structure
+
+Routes live under `src/app/routes` and compose feature-owned UI rather than
+containing feature implementation details. The dashboard keeps its root route
+at `/` in `src/app/routes/dashboard/index.tsx`; data fetching and coordinated
+filter state live in `src/features/dashboard/hooks/use-dashboard.ts`, while
+the status, source, frequency, risk-table, loading, and error sections are
+reusable components under `src/features/dashboard/components`.
+
+Dashboard components receive data and callbacks as props, so the route owns
+page composition and the feature hook owns cross-widget state. The dashboard
+component tests cover the interaction contracts of those extracted sections;
+the projection and MSW handler tests continue to cover the API response and
+request contracts.
+
 ## Fixture data
 
 The fixture set lives under `src/testing/fixtures` and is organized by API

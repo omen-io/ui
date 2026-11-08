@@ -1,201 +1,92 @@
-# React + TypeScript + Vite + shadcn/ui
+# Omen
 
-This is a template for a new Vite project with React, TypeScript, and shadcn/ui.
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![MSW](https://img.shields.io/badge/MSW-3-FF6A33?logo=mockserviceworker&logoColor=white)](https://mswjs.io/)
 
-## Application structure
+Omen is an experiment-observability workspace for teams that need to compare
+how different implementations behave on real workloads. It brings experiment
+results, run health, measurements, and comparisons into one place so teams can
+spot regressions and understand what changed.
 
-Routes live under `src/app/routes` and compose feature-owned UI rather than
-containing feature implementation details. The dashboard keeps its root route
-at `/` in `src/app/routes/dashboard/index.tsx`; data fetching and coordinated
-filter state live in `src/features/dashboard/hooks/use-dashboard.ts`, while
-the status, source, frequency, risk-table, loading, and error sections are
-reusable components under `src/features/dashboard/components`.
+The project is currently a frontend foundation: the dashboard is the primary
+working experience, while the Experiments, Runs, and Settings pages establish
+the product navigation and are still lightweight placeholders. The UI can run
+against deterministic local fixtures today and is shaped to connect to a Go
+API later without changing feature consumers.
 
-Dashboard components receive data and callbacks as props, so the route owns
-page composition and the feature hook owns cross-widget state. The dashboard
-component tests cover the interaction contracts of those extracted sections;
-the projection and MSW handler tests continue to cover the API response and
-request contracts.
+## What the product helps with
 
-## Fixture data
+- See run outcomes and incomplete work at a glance.
+- Compare run activity across experiment sources.
+- Explore experiment risk and status trends through interactive dashboard
+  cards and charts.
+- Keep inputs, measurements, comparisons, and artifact downloads connected to
+  the experiment that produced them.
 
-The fixture set lives under `src/testing/fixtures` and is organized by API
-feature:
+Omen is designed for engineers and product teams who run controlled
+experiments, benchmark alternative implementations, or need a shared view of
+quality and operational risk.
 
-- `auth` contains one current user, the two roles needed to derive its
-  entitlements, and a deterministic bearer-token response.
-- `experiments` is the canonical resource graph for experiments, variants,
-  runs, measurements, comparisons, and metadata-only artifacts.
-- `dashboard` contains one aggregate response for status/source distributions,
-  daily trends, and ranked experiments. It currently includes five sources,
-  including one complete experiment graph for each source.
+## Run it locally
 
-Fixtures use deterministic UUIDs and ISO 8601 UTC timestamps. JSON uses
-camelCase transport fields, collection responses use an `items` envelope, and
-nullable API values are represented as `null`. References in the dashboard
-projection point back to the canonical experiment graph; do not create a
-second copy of those resources to feed a dashboard widget.
-
-Each variant also includes its consumer-provided `key` and the exact
-`callable` name exposed by the library. These values are data, not frontend
-enums: preserve the callable spelling used by the consumer and do not infer
-it from the display name.
-
-Experiments also include a required `source` identifier supplied by the
-service that created them (for example, `accounting-io-v1` or
-`sales-worker-v3`). This identifies the experiment source for dashboard
-grouping; variants can point to different container-image versions without
-changing that experiment-level source. Image-backed variants use
-`containerImageId`, which resolves to `experiments/container-images.json`.
-
-Keep fixture records intentionally small for auth and resource screens. Add
-dashboard records only when they exercise a distinct chart, summary, status,
-relationship, or UI state. Never add passwords, password hashes, refresh
-tokens, signing keys, credentials, file contents, or production artifact URLs.
-
-The dashboard uses `POST /api/v1/dashboard` for the initial load and every
-filter change. The request always contains `filters` (`statuses`, `sources`,
-and `experiments`) plus explicit `ordering`. The fixture handler performs the
-same projection that a backend service will perform; the response is shaped as
-`{ metadata, data }`, where `data` contains `pieChart`, `sourceChart`,
-`runChart`, and `experimentChart`.
-
-Dashboard filter behavior is intentionally widget-specific and must not be
-normalized without a product decision:
-
-| Control              | Backend calculation                                                                                                                                                                                                      | UI effect                                                                                                                                                                                      |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Status selection     | The pie counts use selected sources and experiments, but ignore selected statuses. Source counts and incomplete experiment counts use selected statuses. Run-frequency rows use selected status, source, and experiment. | Selected status sectors and legend rows are enabled; cleared statuses are dimmed. The line chart is replaced by an empty state unless at least one status, source, and experiment is selected. |
-| Source selection     | Pie, source, run, and experiment projections use selected sources where their existing widget rules require it.                                                                                                          | Source tiles are dimmed when cleared. The line chart series are the selected sources. The risk table removes rows from cleared sources.                                                        |
-| Experiment selection | Pie and source projections use selected experiments. Run-frequency rows use selected experiments, including the existing all-experiments rule for aggregate rows.                                                        | Experiment rows remain visible for selected sources, but cleared experiments are dimmed and unpressed. Their selection still affects pie/source/run values.                                    |
-| Enable all           | Selects every available status, source, and experiment.                                                                                                                                                                  | Recalculates all four sections and resets the source carousel to page one.                                                                                                                     |
-| Disable all          | Clears every selection.                                                                                                                                                                                                  | Recalculates zero/empty projections, dims all controls, replaces the line chart, and resets the source carousel to page one.                                                                   |
-
-The `metadata` section returns available filters, the normalized current
-selection, the ordering configuration, `hasSelection`, and the dashboard
-summary. `sourceChart` retains every known source, including zero-count
-sources, and is ordered by descending filtered run count. `experimentChart.rows`
-is source-filtered and ordered by incomplete percentage descending, incomplete
-count descending, experiment name ascending, then experiment ID ascending. Its
-`emptyState` flag matches the current “No incomplete runs” condition. The
-responsive source carousel (four desktop cards, two small-screen cards), page
-state, pointer swipes, and line-chart brush are presentation concerns and
-remain in React.
-
-Source cards are sorted by run count and displayed in a responsive carousel:
-four cards per desktop page and two cards per smaller-screen page. Previous and
-next controls are keyboard accessible, and horizontal pointer swipes move
-between pages without changing the global source selection.
-
-When a feature API is added, place its request and response types in
-`src/features/<feature>/`, keep its JSON under the matching fixture directory,
-and add the MSW handler at `src/testing/handlers/<feature>.ts`. Feature code
-must call its `api.ts` module rather than importing fixture files directly.
-Node/test MSW integration is intentionally deferred until a test runner is
-introduced.
-
-Fixture mode currently handles the complete transport surface represented by
-these fixtures:
-
-- `POST /api/v1/dashboard`
-- `POST /api/v1/auth/login`, `POST /api/v1/auth/refresh`, `GET
-/api/v1/auth/me`, and `GET /api/v1/auth/roles`
-- Experiment, variant, run, measurement, comparison, artifact, and
-  container-image collection and detail endpoints under `/api/v1`
-- Artifact presigned URLs and deterministic fixture-storage file downloads
-
-The handlers live in `src/testing/handlers/<feature>.ts` and are composed by
-`src/testing/handlers.ts`. They return the same JSON envelopes used by the
-typed API modules under `src/features/<feature>/`; feature code should call
-those API modules rather than importing fixture data. Missing resource IDs
-return a JSON `404`, and unauthenticated current-user requests return `401`.
-The settings screen has no fixture handler yet because no settings API
-contract or fixture exists.
-
-### SQL scaffold alignment
-
-`db_example.sql` is a database reference, while fixtures model the HTTP
-contract. SQL `snake_case` names are exposed as camelCase JSON, nullable SQL
-columns remain JSON `null`, and database-only users, roles, permissions,
-refresh-token, identity, and foreign-key mechanics are not fixture records.
-The SQL `experiments.source`, `variants.container_image_id`, and
-`container_images` tables are represented because they are useful resource
-data. The SQL join-table foreign-key direction and generated identity details
-are intentionally not copied into frontend types.
-
-When changing the graph, every experiment source, variant image reference,
-run input, measurement output, comparison measurement pair, and artifact file
-mapping must resolve to an existing fixture record. Dashboard counts and
-experiment projections must be updated from that same graph rather than
-maintained as unrelated sample data.
-
-### File fixtures and artifact downloads
-
-The experiment artifact metadata and file bodies use the same deterministic
-artifact IDs:
-
-- `src/testing/fixtures/files/inputs` contains run inputs.
-- `src/testing/fixtures/files/measurements` contains successful JSON and CSV
-  measurement outputs.
-- `src/testing/fixtures/files/comparisons` contains generated unified diffs for
-  both JSON and CSV measurements.
-- `src/testing/fixtures/experiments/artifact-files.json` is fixture-only
-  infrastructure that maps each artifact ID to a local fixture path. It does
-  not duplicate API metadata or storage implementation details.
-
-The comparison fixture is generated from the control and candidate measurement
-files with a standard unified-diff tool. JSON, CSV, and XML examples are
-included. When either source file changes, regenerate the comparison instead of
-editing the diff by hand. Failed and in-progress measurements intentionally do
-not receive output bodies.
-
-The canonical graph contains a complete successful run for each experiment.
-Checkout ranking additionally contains a failed candidate measurement and an
-in-progress candidate plus a successful retry to exercise lifecycle states.
-The successful retry declares `retryOf` and has its own output artifact;
-artifacts are not reused across runs unless that behavior is explicitly
-modeled.
-
-Feature code obtains a download URL through
-`getArtifactDownloadUrl(artifactId)` and then fetches the returned URL. In
-fixture mode, the artifact endpoint returns a deterministic
-DigitalOcean Spaces/S3-shaped URL with `X-Amz-*` query parameters, and MSW
-serves the matching fixture body from that URL. In real mode, the same API
-function uses the Go API's actual presigned URL. No component or feature code
-needs to branch on fixture mode.
-
-Use `.env.development` for fixture mode and `.env.production` or an explicit
-environment override for real mode. `VITE_API_BASE_URL` and
-`VITE_USE_FIXTURES` are public build-time configuration; they must never
-contain credentials or signing keys.
-
-## Adding components
-
-To add components to your app, run the following command:
+Requirements: a recent Node.js release and npm.
 
 ```bash
-npx shadcn@latest add button
+npm install
+npm run dev
 ```
 
-This will place the ui components in the `src/components` directory.
+The development environment uses local MSW fixtures by default. Open the URL
+printed by Vite to view the dashboard.
 
-## Using components
+Useful commands:
 
-To use the components in your app, import them as follows:
-
-```tsx
-import { Button } from "@/components/ui/button"
+```bash
+npm run test       # run the test suite
+npm run lint       # check source quality
+npm run typecheck  # check TypeScript
+npm run build      # create a production build
 ```
 
-### Dashboard chart components
+The public environment files select the data source:
 
-The dashboard uses the local EvilCharts/Recharts wrappers for the interactive
-status donut and source trend line. These wrappers follow the EvilCharts
-gallery's composable chart pattern for legends, tooltips, and accessible
-selection. Deselected status slices are dimmed through the pie component's
-feature-level disabled-sector input. The trend chart uses an explicit
-dashboard-owned high-contrast palette passed through `ChartConfig.colors`;
-shadcn/EvilCharts default chart variables are intentionally not modified. If another chart is needed, prefer adding the corresponding
-EvilCharts registry component with `npx shadcn@latest add
-@evilcharts/recharts-<chart>` and keep its configuration in the feature rather
-than importing fixture data into a component.
+- `.env.development` enables deterministic fixtures.
+- `.env.production` points at the future API and disables fixtures.
+- `.env.example` documents the two public Vite variables.
+
+These values are build-time browser configuration. Never put passwords,
+credentials, signing keys, or other secrets in them.
+
+## Contributing
+
+Contributions should preserve the product’s central promise: a clear,
+trustworthy view of experiment behavior. A typical contribution looks like
+this:
+
+1. Choose a focused user or developer-facing improvement.
+2. Keep feature code organized under its feature boundary.
+3. Add or update tests for behavior and transport contracts.
+4. Run the relevant checks (`test`, `lint`, `typecheck`, and `build`).
+5. Describe the user-visible result and any fixture or API contract changes.
+
+When adding an API-backed feature, keep its request/response types and request
+functions together, use the shared transport boundary, and keep fixture data
+consistent with the same resource relationships. The technical guide in
+[`src/README.md`](src/README.md) is the source for architecture, fixture
+rules, dashboard behavior, and testing conventions.
+
+## Project status
+
+The repository is intentionally evolving toward a complete experiment
+workspace. The dashboard and its fixture-backed contracts are the most
+developed area. Authentication and experiment resource APIs have transport
+fixtures, but user-facing auth and resource management flows are not yet
+complete. Backend behavior, persistence, and production deployment are
+outside this frontend repository’s current scope.
+
+## License
+
+No license has been declared in this repository yet.

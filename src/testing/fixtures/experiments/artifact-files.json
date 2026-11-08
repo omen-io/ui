@@ -1,0 +1,80 @@
+{
+  "items": [
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000101",
+      "fixturePath": "files/inputs/checkout-sample.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000102",
+      "fixturePath": "files/measurements/checkout-ranking-control.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000103",
+      "fixturePath": "files/comparisons/checkout-ranking-comparison.diff"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000104",
+      "fixturePath": "files/measurements/checkout-ranking-candidate.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000105",
+      "fixturePath": "files/measurements/checkout-ranking-control.csv"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000106",
+      "fixturePath": "files/measurements/checkout-ranking-candidate.csv"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000107",
+      "fixturePath": "files/comparisons/checkout-ranking-comparison.csv.diff"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000108",
+      "fixturePath": "files/inputs/search-sample.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000109",
+      "fixturePath": "files/inputs/latency-sample.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000110",
+      "fixturePath": "files/measurements/checkout-ranking-control-retry.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000111",
+      "fixturePath": "files/measurements/search-relevance-control.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000112",
+      "fixturePath": "files/measurements/search-relevance-candidate.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000113",
+      "fixturePath": "files/comparisons/search-relevance-comparison.diff"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000114",
+      "fixturePath": "files/measurements/latency-guardrails-control.xml"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000115",
+      "fixturePath": "files/measurements/latency-guardrails-candidate.xml"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000116",
+      "fixturePath": "files/comparisons/latency-guardrails-comparison.diff"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000117",
+      "fixturePath": "files/measurements/payment-authorization-control.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000118",
+      "fixturePath": "files/measurements/payment-authorization-candidate.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000119",
+      "fixturePath": "files/comparisons/payment-authorization-comparison.diff"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+diff --git a/checkout-ranking-control.json b/checkout-ranking-candidate.json
+index 5420e7c..2487f3a 100644
+--- a/checkout-ranking-control.json
++++ b/checkout-ranking-candidate.json
+@@ -1,15 +1,15 @@
+ {
+   "requestId": "checkout-1001",
+-  "variant": "checkout-current",
++  "variant": "checkout-candidate-v2",
+   "scores": [
+     {
+       "sku": "omen-keyboard",
+-      "score": 0.91,
++      "score": 0.96,
+       "rank": 1
+     },
+     {
+       "sku": "omen-mouse",
+-      "score": 0.74,
++      "score": 0.68,
+       "rank": 2
+     }
+   ],

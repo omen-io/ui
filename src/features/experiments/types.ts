@@ -1,0 +1,83 @@
+export type Collection<T> = {
+  items: T[]
+}
+
+export type Experiment = {
+  id: string
+  name: string
+  source: string
+  createdAt: string
+  updatedAt: string
+}
+
+export type Variant = {
+  id: string
+  experimentId: string
+  containerImageId: string | null
+  type: string
+  key: string
+  callable: string
+  name: string
+}
+
+export type Run = {
+  id: string
+  experimentId: string
+  inputFileId: string
+  inputFormat: string
+  status: string
+  startedAt: string | null
+  endedAt: string | null
+  createdAt: string
+  updatedAt: string
+}
+
+export type Measurement = {
+  id: string
+  runId: string
+  variantId: string
+  outputFileId: string | null
+  outputFormat: string
+  status: string
+  error: string | null
+  startedAt: string
+  endedAt: string | null
+  createdAt: string
+  updatedAt: string
+  retryOf?: string
+}
+
+export type Comparison = {
+  id: string
+  runId: string
+  controlMeasurementId: string
+  candidateMeasurementId: string
+  outputFileId: string | null
+  outputFormat: string
+  createdAt: string
+  updatedAt: string
+}
+
+export type Artifact = {
+  id: string
+  bucket: string
+  objectKey: string
+  filename: string
+  contentType: string
+  createdAt: string
+}
+
+export type ContainerImage = {
+  id: string
+  registry: string
+  repository: string
+  digest: string
+  tag: string | null
+  createdAt: string
+  updatedAt: string | null
+}
+
+export type ArtifactDownload = {
+  url: string
+  expiresAt: string
+}

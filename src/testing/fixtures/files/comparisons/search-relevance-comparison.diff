@@ -1,0 +1,25 @@
+diff --git a/search-relevance-control.json b/search-relevance-candidate.json
+index 486a5fa..2658935 100644
+--- a/search-relevance-control.json
++++ b/search-relevance-candidate.json
+@@ -1,15 +1,15 @@
+ {
+   "requestId": "search-2001",
+-  "variant": "search-current",
++  "variant": "search-candidate-v1",
+   "results": [
+     {
+-      "documentId": "doc-keyboard-01",
+-      "score": 0.88,
++      "documentId": "doc-keyboard-02",
++      "score": 0.93,
+       "rank": 1
+     },
+     {
+-      "documentId": "doc-keyboard-02",
+-      "score": 0.74,
++      "documentId": "doc-keyboard-01",
++      "score": 0.79,
+       "rank": 2
+     }
+   ]

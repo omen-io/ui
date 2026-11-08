@@ -1,0 +1,156 @@
+{
+  "items": [
+    {
+      "id": "00000000-0000-0000-0000-000000000101",
+      "bucket": "fixture-bucket",
+      "objectKey": "inputs/checkout-sample.json",
+      "filename": "checkout-sample.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-01T08:30:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000102",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/checkout-ranking-control.json",
+      "filename": "checkout-ranking-control.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-02T10:06:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000103",
+      "bucket": "fixture-bucket",
+      "objectKey": "comparisons/checkout-ranking-comparison.diff",
+      "filename": "checkout-ranking-comparison.diff",
+      "contentType": "text/x-diff",
+      "createdAt": "2029-12-02T10:15:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000104",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/checkout-ranking-candidate.json",
+      "filename": "checkout-ranking-candidate.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-02T10:12:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000105",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/checkout-ranking-control.csv",
+      "filename": "checkout-ranking-control.csv",
+      "contentType": "text/csv",
+      "createdAt": "2029-12-06T09:05:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000106",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/checkout-ranking-candidate.csv",
+      "filename": "checkout-ranking-candidate.csv",
+      "contentType": "text/csv",
+      "createdAt": "2029-12-06T09:10:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000107",
+      "bucket": "fixture-bucket",
+      "objectKey": "comparisons/checkout-ranking-comparison.csv.diff",
+      "filename": "checkout-ranking-comparison.csv.diff",
+      "contentType": "text/x-diff",
+      "createdAt": "2029-12-06T09:15:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000108",
+      "bucket": "fixture-bucket",
+      "objectKey": "inputs/search-sample.json",
+      "filename": "search-sample.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-03T10:30:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000109",
+      "bucket": "fixture-bucket",
+      "objectKey": "inputs/latency-sample.json",
+      "filename": "latency-sample.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-04T08:30:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000110",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/checkout-ranking-control-retry.json",
+      "filename": "checkout-ranking-control-retry.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-05T13:06:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000111",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/search-relevance-control.json",
+      "filename": "search-relevance-control.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-03T11:06:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000112",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/search-relevance-candidate.json",
+      "filename": "search-relevance-candidate.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-03T11:12:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000113",
+      "bucket": "fixture-bucket",
+      "objectKey": "comparisons/search-relevance-comparison.diff",
+      "filename": "search-relevance-comparison.diff",
+      "contentType": "text/x-diff",
+      "createdAt": "2029-12-03T11:15:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000114",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/latency-guardrails-control.xml",
+      "filename": "latency-guardrails-control.xml",
+      "contentType": "application/xml",
+      "createdAt": "2029-12-04T09:04:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000115",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/latency-guardrails-candidate.xml",
+      "filename": "latency-guardrails-candidate.xml",
+      "contentType": "application/xml",
+      "createdAt": "2029-12-04T09:08:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000116",
+      "bucket": "fixture-bucket",
+      "objectKey": "comparisons/latency-guardrails-comparison.diff",
+      "filename": "latency-guardrails-comparison.diff",
+      "contentType": "text/x-diff",
+      "createdAt": "2029-12-04T09:12:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000117",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/payment-authorization-control.json",
+      "filename": "payment-authorization-control.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-13T09:04:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000118",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/payment-authorization-candidate.json",
+      "filename": "payment-authorization-candidate.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-13T09:08:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000119",
+      "bucket": "fixture-bucket",
+      "objectKey": "comparisons/payment-authorization-comparison.diff",
+      "filename": "payment-authorization-comparison.diff",
+      "contentType": "text/x-diff",
+      "createdAt": "2029-12-13T09:15:00Z"
+    }
+  ]
+}

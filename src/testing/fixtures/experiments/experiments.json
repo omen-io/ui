@@ -1,0 +1,39 @@
+{
+  "items": [
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "name": "Checkout ranking",
+      "source": "sales-worker-v3",
+      "createdAt": "2029-12-01T09:00:00Z",
+      "updatedAt": "2029-12-06T15:00:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "name": "Search relevance",
+      "source": "search-worker-v2",
+      "createdAt": "2029-12-03T10:00:00Z",
+      "updatedAt": "2029-12-03T10:00:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000003",
+      "name": "Latency guardrails",
+      "source": "accounting-io-v1",
+      "createdAt": "2029-12-04T08:30:00Z",
+      "updatedAt": "2029-12-04T08:30:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000004",
+      "name": "Telemetry sampling",
+      "source": "observability-agent-v1",
+      "createdAt": "2029-12-09T08:00:00Z",
+      "updatedAt": "2029-12-11T12:00:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000005",
+      "name": "Payment authorization",
+      "source": "payments-worker-v2",
+      "createdAt": "2029-12-12T08:00:00Z",
+      "updatedAt": "2029-12-13T12:00:00Z"
+    }
+  ]
+}

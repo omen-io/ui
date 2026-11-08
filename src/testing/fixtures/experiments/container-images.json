@@ -1,0 +1,94 @@
+{
+  "items": [
+    {
+      "id": "00000000-0000-0000-0000-000000000201",
+      "registry": "registry.example.test",
+      "repository": "omen/sales-worker",
+      "digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "tag": "v3.0.0",
+      "createdAt": "2029-11-28T09:00:00Z",
+      "updatedAt": null
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000202",
+      "registry": "registry.example.test",
+      "repository": "omen/sales-worker",
+      "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "tag": "candidate-v2",
+      "createdAt": "2029-12-01T09:00:00Z",
+      "updatedAt": null
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000203",
+      "registry": "registry.example.test",
+      "repository": "omen/search-worker",
+      "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "tag": "candidate-v1",
+      "createdAt": "2029-12-02T09:00:00Z",
+      "updatedAt": null
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000204",
+      "registry": "registry.example.test",
+      "repository": "omen/search-worker",
+      "digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+      "tag": "v2.0.0",
+      "createdAt": "2029-12-02T09:00:00Z",
+      "updatedAt": null
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000205",
+      "registry": "registry.example.test",
+      "repository": "omen/accounting-io",
+      "digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+      "tag": "v1.0.0",
+      "createdAt": "2029-12-03T09:00:00Z",
+      "updatedAt": null
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000206",
+      "registry": "registry.example.test",
+      "repository": "omen/accounting-io",
+      "digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+      "tag": "candidate-v2",
+      "createdAt": "2029-12-03T09:00:00Z",
+      "updatedAt": null
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000207",
+      "registry": "registry.example.test",
+      "repository": "omen/observability-agent",
+      "digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+      "tag": "v1.0.0",
+      "createdAt": "2029-12-08T09:00:00Z",
+      "updatedAt": null
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000208",
+      "registry": "registry.example.test",
+      "repository": "omen/observability-agent",
+      "digest": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+      "tag": "candidate-v2",
+      "createdAt": "2029-12-08T09:00:00Z",
+      "updatedAt": null
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000209",
+      "registry": "registry.example.test",
+      "repository": "omen/payments-worker",
+      "digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+      "tag": "v2.0.0",
+      "createdAt": "2029-12-11T09:00:00Z",
+      "updatedAt": null
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000210",
+      "registry": "registry.example.test",
+      "repository": "omen/payments-worker",
+      "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "tag": "candidate-v2",
+      "createdAt": "2029-12-11T09:00:00Z",
+      "updatedAt": null
+    }
+  ]
+}

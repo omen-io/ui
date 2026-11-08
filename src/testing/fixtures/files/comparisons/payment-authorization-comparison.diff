@@ -1,0 +1,13 @@
+diff --git a/payment-authorization-control.json b/payment-authorization-candidate.json
+index 5f1a001..7d2b004 100644
+--- a/payment-authorization-control.json
++++ b/payment-authorization-candidate.json
+@@ -1,6 +1,6 @@
+ {
+   "requestId": "payment-5001",
+-  "variant": "payments-current",
++  "variant": "payments-candidate-v2",
+   "decision": "approved",
+-  "authorizationLatencyMs": 184
++  "authorizationLatencyMs": 161
+ }

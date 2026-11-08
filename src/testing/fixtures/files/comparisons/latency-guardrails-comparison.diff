@@ -1,0 +1,15 @@
+diff --git a/latency-guardrails-control.xml b/latency-guardrails-candidate.xml
+index 2469419..1ec34a5 100644
+--- a/latency-guardrails-control.xml
++++ b/latency-guardrails-candidate.xml
+@@ -1,6 +1,6 @@
+-<measurement requestId="latency-3001" variant="latency-default">
++<measurement requestId="latency-3001" variant="latency-candidate-v2">
+   <endpoint>/checkout</endpoint>
+-  <p50Milliseconds>82</p50Milliseconds>
+-  <p95Milliseconds>145</p95Milliseconds>
+-  <thresholdMilliseconds>150</thresholdMilliseconds>
++  <p50Milliseconds>76</p50Milliseconds>
++  <p95Milliseconds>128</p95Milliseconds>
++  <thresholdMilliseconds>140</thresholdMilliseconds>
+ </measurement>

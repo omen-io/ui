@@ -1,0 +1,20 @@
+{
+  "items": [
+    {
+      "id": "role-analyst",
+      "name": "analyst",
+      "permissions": [
+        "dashboard:read",
+        "experiments:read",
+        "measurements:read"
+      ]
+    },
+    {
+      "id": "role-operator",
+      "name": "operator",
+      "permissions": [
+        "settings:write"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,274 @@
+{
+  "summary": {
+    "experimentCount": 5,
+    "totalRunCount": 21,
+    "notCompletedRunCount": 14
+  },
+  "runStatusDistribution": [
+    {
+      "status": "completed",
+      "count": 7
+    },
+    {
+      "status": "completed_with_differences",
+      "count": 8
+    },
+    {
+      "status": "failed",
+      "count": 6
+    }
+  ],
+  "sourceDistribution": [
+    {
+      "source": "sales-worker-v3",
+      "runCount": 6,
+      "statusCounts": {
+        "completed": 2,
+        "completed_with_differences": 2,
+        "failed": 2
+      }
+    },
+    {
+      "source": "search-worker-v2",
+      "runCount": 9,
+      "statusCounts": {
+        "completed": 1,
+        "completed_with_differences": 5,
+        "failed": 3
+      }
+    },
+    {
+      "source": "accounting-io-v1",
+      "runCount": 1,
+      "statusCounts": {
+        "completed": 1,
+        "completed_with_differences": 0,
+        "failed": 0
+      }
+    },
+    {
+      "source": "observability-agent-v1",
+      "runCount": 3,
+      "statusCounts": {
+        "completed": 2,
+        "completed_with_differences": 0,
+        "failed": 1
+      }
+    },
+    {
+      "source": "payments-worker-v2",
+      "runCount": 2,
+      "statusCounts": {
+        "completed": 1,
+        "completed_with_differences": 1,
+        "failed": 0
+      }
+    }
+  ],
+  "runFrequency": [
+    {
+      "date": "2029-12-02",
+      "source": "sales-worker-v3",
+      "status": "completed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000001"
+    },
+    {
+      "date": "2029-12-03",
+      "source": "search-worker-v2",
+      "status": "failed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000002"
+    },
+    {
+      "date": "2029-12-03",
+      "source": "search-worker-v2",
+      "status": "completed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000002"
+    },
+    {
+      "date": "2029-12-04",
+      "source": "accounting-io-v1",
+      "status": "completed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000003"
+    },
+    {
+      "date": "2029-12-06",
+      "source": "sales-worker-v3",
+      "status": "completed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000001"
+    },
+    {
+      "date": "2029-12-09",
+      "source": "observability-agent-v1",
+      "status": "completed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000004"
+    },
+    {
+      "date": "2029-12-10",
+      "source": "observability-agent-v1",
+      "status": "failed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000004"
+    },
+    {
+      "date": "2029-12-11",
+      "source": "observability-agent-v1",
+      "status": "completed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000004"
+    },
+    {
+      "date": "2029-12-12",
+      "source": "payments-worker-v2",
+      "status": "completed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000005"
+    },
+    {
+      "date": "2029-12-13",
+      "source": "payments-worker-v2",
+      "status": "completed_with_differences",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000005"
+    },
+    {
+      "date": "2029-12-14",
+      "source": "sales-worker-v3",
+      "status": "failed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000001"
+    },
+    {
+      "date": "2029-12-15",
+      "source": "sales-worker-v3",
+      "status": "failed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000001"
+    },
+    {
+      "date": "2029-12-16",
+      "source": "sales-worker-v3",
+      "status": "completed_with_differences",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000001"
+    },
+    {
+      "date": "2029-12-17",
+      "source": "sales-worker-v3",
+      "status": "completed_with_differences",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000001"
+    },
+    {
+      "date": "2029-12-18",
+      "source": "search-worker-v2",
+      "status": "failed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000002"
+    },
+    {
+      "date": "2029-12-19",
+      "source": "search-worker-v2",
+      "status": "failed",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000002"
+    },
+    {
+      "date": "2029-12-20",
+      "source": "search-worker-v2",
+      "status": "completed_with_differences",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000002"
+    },
+    {
+      "date": "2029-12-21",
+      "source": "search-worker-v2",
+      "status": "completed_with_differences",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000002"
+    },
+    {
+      "date": "2029-12-22",
+      "source": "search-worker-v2",
+      "status": "completed_with_differences",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000002"
+    },
+    {
+      "date": "2029-12-23",
+      "source": "search-worker-v2",
+      "status": "completed_with_differences",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000002"
+    },
+    {
+      "date": "2029-12-24",
+      "source": "search-worker-v2",
+      "status": "completed_with_differences",
+      "count": 1,
+      "experimentId": "00000000-0000-0000-0000-000000000002"
+    }
+  ],
+  "experimentRisk": [
+    {
+      "experimentId": "00000000-0000-0000-0000-000000000001",
+      "name": "Checkout ranking",
+      "source": "sales-worker-v3",
+      "totalRuns": 6,
+      "statusCounts": {
+        "completed": 2,
+        "completed_with_differences": 2,
+        "failed": 2
+      }
+    },
+    {
+      "experimentId": "00000000-0000-0000-0000-000000000002",
+      "name": "Search relevance",
+      "source": "search-worker-v2",
+      "totalRuns": 9,
+      "statusCounts": {
+        "completed": 1,
+        "completed_with_differences": 5,
+        "failed": 3
+      }
+    },
+    {
+      "experimentId": "00000000-0000-0000-0000-000000000003",
+      "name": "Latency guardrails",
+      "source": "accounting-io-v1",
+      "totalRuns": 1,
+      "statusCounts": {
+        "completed": 1,
+        "completed_with_differences": 0,
+        "failed": 0
+      }
+    },
+    {
+      "experimentId": "00000000-0000-0000-0000-000000000004",
+      "name": "Telemetry sampling",
+      "source": "observability-agent-v1",
+      "totalRuns": 3,
+      "statusCounts": {
+        "completed": 2,
+        "completed_with_differences": 0,
+        "failed": 1
+      }
+    },
+    {
+      "experimentId": "00000000-0000-0000-0000-000000000005",
+      "name": "Payment authorization",
+      "source": "payments-worker-v2",
+      "totalRuns": 2,
+      "statusCounts": {
+        "completed": 1,
+        "completed_with_differences": 1,
+        "failed": 0
+      }
+    }
+  ]
+}

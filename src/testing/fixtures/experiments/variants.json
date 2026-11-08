@@ -1,0 +1,94 @@
+{
+  "items": [
+    {
+      "id": "00000000-0000-0000-0000-000000000011",
+      "experimentId": "00000000-0000-0000-0000-000000000001",
+      "containerImageId": "00000000-0000-0000-0000-000000000201",
+      "type": "control",
+      "key": "checkout-current",
+      "callable": "runCheckoutRankingControl",
+      "name": "Current checkout model"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000012",
+      "experimentId": "00000000-0000-0000-0000-000000000001",
+      "containerImageId": "00000000-0000-0000-0000-000000000202",
+      "type": "candidate",
+      "key": "checkout-candidate-v2",
+      "callable": "runCheckoutRankingCandidateV2",
+      "name": "Candidate checkout model"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "experimentId": "00000000-0000-0000-0000-000000000002",
+      "containerImageId": "00000000-0000-0000-0000-000000000203",
+      "type": "candidate",
+      "key": "search-candidate-v1",
+      "callable": "runSearchRelevanceCandidateV1",
+      "name": "Candidate search model"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000013",
+      "experimentId": "00000000-0000-0000-0000-000000000002",
+      "containerImageId": "00000000-0000-0000-0000-000000000204",
+      "type": "control",
+      "key": "search-current",
+      "callable": "runSearchRelevanceControl",
+      "name": "Current search model"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000003",
+      "experimentId": "00000000-0000-0000-0000-000000000003",
+      "containerImageId": "00000000-0000-0000-0000-000000000205",
+      "type": "control",
+      "key": "latency-default",
+      "callable": "runLatencyGuardrailsControl",
+      "name": "Current latency threshold"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000014",
+      "experimentId": "00000000-0000-0000-0000-000000000003",
+      "containerImageId": "00000000-0000-0000-0000-000000000206",
+      "type": "candidate",
+      "key": "latency-candidate-v2",
+      "callable": "runLatencyGuardrailsCandidateV2",
+      "name": "Candidate latency threshold"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000015",
+      "experimentId": "00000000-0000-0000-0000-000000000004",
+      "containerImageId": "00000000-0000-0000-0000-000000000207",
+      "type": "control",
+      "key": "telemetry-current",
+      "callable": "runTelemetrySamplingControl",
+      "name": "Current telemetry sampler"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000016",
+      "experimentId": "00000000-0000-0000-0000-000000000004",
+      "containerImageId": "00000000-0000-0000-0000-000000000208",
+      "type": "candidate",
+      "key": "telemetry-candidate-v2",
+      "callable": "runTelemetrySamplingCandidateV2",
+      "name": "Candidate telemetry sampler"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000017",
+      "experimentId": "00000000-0000-0000-0000-000000000005",
+      "containerImageId": "00000000-0000-0000-0000-000000000209",
+      "type": "control",
+      "key": "payments-current",
+      "callable": "runPaymentAuthorizationControl",
+      "name": "Current authorization flow"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000018",
+      "experimentId": "00000000-0000-0000-0000-000000000005",
+      "containerImageId": "00000000-0000-0000-0000-000000000210",
+      "type": "candidate",
+      "key": "payments-candidate-v2",
+      "callable": "runPaymentAuthorizationCandidateV2",
+      "name": "Candidate authorization flow"
+    }
+  ]
+}

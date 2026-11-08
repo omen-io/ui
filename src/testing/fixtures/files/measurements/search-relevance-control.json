@@ -1,0 +1,16 @@
+{
+  "requestId": "search-2001",
+  "variant": "search-current",
+  "results": [
+    {
+      "documentId": "doc-keyboard-01",
+      "score": 0.88,
+      "rank": 1
+    },
+    {
+      "documentId": "doc-keyboard-02",
+      "score": 0.74,
+      "rank": 2
+    }
+  ]
+}

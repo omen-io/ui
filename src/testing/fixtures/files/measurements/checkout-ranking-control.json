@@ -1,0 +1,17 @@
+{
+  "requestId": "checkout-1001",
+  "variant": "checkout-current",
+  "scores": [
+    {
+      "sku": "omen-keyboard",
+      "score": 0.91,
+      "rank": 1
+    },
+    {
+      "sku": "omen-mouse",
+      "score": 0.74,
+      "rank": 2
+    }
+  ],
+  "total": 2
+}

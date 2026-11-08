@@ -1,0 +1,6 @@
+{
+  "requestId": "latency-3001",
+  "endpoint": "/checkout",
+  "sampleCount": 100,
+  "region": "us-east"
+}

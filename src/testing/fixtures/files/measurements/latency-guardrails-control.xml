@@ -1,0 +1,6 @@
+<measurement requestId="latency-3001" variant="latency-default">
+  <endpoint>/checkout</endpoint>
+  <p50Milliseconds>82</p50Milliseconds>
+  <p95Milliseconds>145</p95Milliseconds>
+  <thresholdMilliseconds>150</thresholdMilliseconds>
+</measurement>

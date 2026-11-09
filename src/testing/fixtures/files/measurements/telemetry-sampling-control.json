@@ -1,0 +1,6 @@
+{
+  "requestId": "telemetry-4001",
+  "variant": "telemetry-current",
+  "sampleRate": 0.1,
+  "eventsProcessed": 1000
+}

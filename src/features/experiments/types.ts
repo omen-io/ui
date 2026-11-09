@@ -120,3 +120,24 @@ export type MeasurementDetailBreadcrumbOrigin = "runs" | "experiment"
 export type MeasurementDetailNavigationState = {
   from: MeasurementDetailBreadcrumbOrigin
 }
+
+export type ComparisonAnalyzerState = {
+  comparison: Comparison | null
+  run: Run | null
+  experiment: Experiment | null
+  controlMeasurement: Measurement | null
+  candidateMeasurement: Measurement | null
+  controlVariant: Variant | null
+  candidateVariant: Variant | null
+  comparisonArtifact: Artifact | null
+  comparisonContent: string | null
+  comparisonError: Error | null
+  controlArtifact: Artifact | null
+  controlContent: string | null
+  controlError: Error | null
+  candidateArtifact: Artifact | null
+  candidateContent: string | null
+  candidateError: Error | null
+  loading: boolean
+  error: Error | null
+}

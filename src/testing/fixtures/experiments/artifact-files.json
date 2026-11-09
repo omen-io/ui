@@ -75,6 +75,22 @@
     {
       "artifactId": "00000000-0000-0000-0000-000000000119",
       "fixturePath": "files/comparisons/payment-authorization-comparison.diff"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000120",
+      "fixturePath": "files/measurements/telemetry-sampling-control.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000121",
+      "fixturePath": "files/measurements/telemetry-sampling-candidate.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000122",
+      "fixturePath": "files/measurements/payment-authorization-control-completed.json"
+    },
+    {
+      "artifactId": "00000000-0000-0000-0000-000000000123",
+      "fixturePath": "files/measurements/payment-authorization-candidate-completed.json"
     }
   ]
 }

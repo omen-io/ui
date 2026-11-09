@@ -17,8 +17,8 @@ describe("projectDashboard", () => {
     expect(response.metadata.hasSelection).toBe(true)
     expect(response.metadata.summary.totalRunCount).toBe(22)
     expect(response.data.pieChart).toEqual([
-      { status: "completed", count: 7 },
-      { status: "completed_with_differences", count: 8 },
+      { status: "completed", count: 3 },
+      { status: "completed_with_differences", count: 12 },
       { status: "in_progress", count: 1 },
       { status: "failed", count: 6 },
     ])
@@ -32,9 +32,9 @@ describe("projectDashboard", () => {
     expect(response.data.experimentChart.rows.map((row) => row.name)).toEqual([
       "Search relevance",
       "Checkout ranking",
+      "Latency guardrails",
       "Payment authorization",
       "Telemetry sampling",
-      "Latency guardrails",
     ])
   })
 
@@ -45,10 +45,10 @@ describe("projectDashboard", () => {
     })
 
     expect(response.data.pieChart.map((item) => item.count)).toEqual([
-      7, 8, 1, 6,
+      3, 12, 1, 6,
     ])
     expect(response.data.sourceChart.map((source) => source.runCount)).toEqual([
-      2, 2, 1, 1, 1,
+      2, 1, 0, 0, 0,
     ])
     expect(
       response.data.experimentChart.rows.map((row) => row.incompleteCount)

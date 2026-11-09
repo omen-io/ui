@@ -37,6 +37,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { StatusTag } from "@/components/ui/status-tag"
 import { HttpError } from "@/lib/http-client"
+import { ComparisonDiffView } from "./comparison-diff-view"
 import type {
   MeasurementDetailBreadcrumbOrigin,
   MeasurementDetailState,
@@ -239,11 +240,7 @@ export function MeasurementDetail({
   }
   const isFailed = measurement.status === "failed"
   const comparisonPath = comparison
-    ? `/experiments/${encodeURIComponent(
-        experiment.id,
-      )}/runs/${encodeURIComponent(run.id)}/comparisons/${encodeURIComponent(
-        comparison.id,
-      )}`
+    ? `/comparisons/${encodeURIComponent(comparison.id)}`
     : undefined
 
   return (
@@ -435,7 +432,7 @@ export function MeasurementDetail({
                   <span className="font-medium">{variant.name}</span>
                 </div>
                 {comparisonArtifact ? (
-                  <ArtifactViewer
+                  <ComparisonDiffView
                     artifact={comparisonArtifact}
                     content={comparisonContent}
                     error={comparisonError}

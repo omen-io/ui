@@ -1,0 +1,6 @@
+{
+  "requestId": "payment-5002",
+  "variant": "payments-candidate-v2",
+  "decision": "approved",
+  "authorizationLatencyMs": 172
+}

@@ -64,7 +64,7 @@ describe("run detail", () => {
     render(
       <MemoryRouter>
         <RunDetail {...detail} onRetry={() => undefined} />
-      </MemoryRouter>,
+      </MemoryRouter>
     )
 
     expect(screen.getByText("Experiments")).toBeTruthy()
@@ -74,14 +74,14 @@ describe("run detail", () => {
     expect(screen.getByText("ranking.control")).toBeTruthy()
     expect(screen.queryByText("Input format")).toBeNull()
     expect(
-      screen.getByRole("button", { name: /open input file/i }).getAttribute(
-        "href",
-      ),
+      screen
+        .getByRole("button", { name: /open input file/i })
+        .getAttribute("href")
     ).toBe("/artifacts/artifact-1")
     expect(
-      screen.getByRole("link", { name: /open measurement measurement-1/i }).getAttribute(
-        "href",
-      ),
+      screen
+        .getByRole("link", { name: /open measurement measurement-1/i })
+        .getAttribute("href")
     ).toBe("/experiments/experiment-1/runs/run-1/measurements/measurement-1")
   })
 
@@ -93,7 +93,7 @@ describe("run detail", () => {
           breadcrumbOrigin="runs"
           onRetry={() => undefined}
         />
-      </MemoryRouter>,
+      </MemoryRouter>
     )
 
     const breadcrumb = screen.getByRole("navigation", { name: "breadcrumb" })
@@ -110,7 +110,7 @@ describe("run detail", () => {
           contentType: "application/octet-stream",
         }}
         content="binary content"
-      />,
+      />
     )
 
     expect(screen.getByText("Preview unavailable")).toBeTruthy()
@@ -124,9 +124,29 @@ describe("run detail", () => {
         content={
           { requestId: "search-2001", query: "shoes" } as unknown as string
         }
-      />,
+      />
     )
 
     expect(screen.getByText("Preview unavailable")).toBeTruthy()
+  })
+
+  it("renders readable artifact content in a fixed non-scrollable code block", () => {
+    render(
+      <ArtifactViewer
+        artifact={detail.artifact}
+        content={Array.from(
+          { length: 25 },
+          (_, index) => `line ${index + 1}`
+        ).join("\n")}
+      />
+    )
+
+    const codeBlockContent = document.querySelector(
+      '[data-slot="code-block-content"]'
+    )
+    expect(codeBlockContent).toBeTruthy()
+    expect(codeBlockContent?.classList.contains("h-[20lh]")).toBe(true)
+    expect(codeBlockContent?.classList.contains("overflow-hidden")).toBe(true)
+    expect(codeBlockContent?.classList.contains("overflow-auto")).toBe(false)
   })
 })

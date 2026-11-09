@@ -151,6 +151,38 @@
       "filename": "payment-authorization-comparison.diff",
       "contentType": "text/x-diff",
       "createdAt": "2029-12-13T09:15:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000120",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/telemetry-sampling-control.json",
+      "filename": "telemetry-sampling-control.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-09T09:04:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000121",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/telemetry-sampling-candidate.json",
+      "filename": "telemetry-sampling-candidate.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-09T09:08:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000122",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/payment-authorization-control-completed.json",
+      "filename": "payment-authorization-control-completed.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-12T09:04:00Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000123",
+      "bucket": "fixture-bucket",
+      "objectKey": "measurements/payment-authorization-candidate-completed.json",
+      "filename": "payment-authorization-candidate-completed.json",
+      "contentType": "application/json",
+      "createdAt": "2029-12-12T09:08:00Z"
     }
   ]
 }

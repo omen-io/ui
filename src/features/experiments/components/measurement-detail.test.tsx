@@ -1,6 +1,7 @@
 import { cleanup, render, screen, within } from "@testing-library/react"
 import { MemoryRouter } from "react-router"
 import { afterEach, describe, expect, it } from "vitest"
+import { ThemeProvider } from "@/components/theme-provider"
 import { MeasurementDetail } from "./measurement-detail"
 import type { MeasurementDetailState } from "../types"
 
@@ -106,9 +107,11 @@ const baseDetail: MeasurementDetailState = {
 describe("measurement detail", () => {
   it("renders output and candidate comparison preview", () => {
     render(
-      <MemoryRouter>
-        <MeasurementDetail {...baseDetail} onRetry={() => undefined} />
-      </MemoryRouter>,
+      <ThemeProvider defaultTheme="light">
+        <MemoryRouter>
+          <MeasurementDetail {...baseDetail} onRetry={() => undefined} />
+        </MemoryRouter>
+      </ThemeProvider>,
     )
 
     expect(screen.getByText("Output preview")).toBeTruthy()
@@ -117,32 +120,42 @@ describe("measurement detail", () => {
     expect(screen.getByText('{"score":0.92}')).toBeTruthy()
     expect(screen.queryByText("Output format")).toBeNull()
     expect(screen.getByText("Comparison with control")).toBeTruthy()
-    expect(screen.getByText("result.diff")).toBeTruthy()
+    expect(screen.getByTestId("comparison-diff-view").textContent).toContain(
+      "score: 0.90",
+    )
+    expect(
+      document.querySelectorAll('[data-slot="code-block-content"]')
+    ).toHaveLength(1)
+    const outputContentBlock = document.querySelector(
+      '[data-slot="code-block-content"]'
+    )
+    expect(outputContentBlock?.classList.contains("h-[20lh]")).toBe(true)
+    expect(outputContentBlock?.classList.contains("overflow-hidden")).toBe(true)
     expect(
       screen.getByRole("button", { name: /open full comparison/i }).getAttribute(
         "href",
       ),
-    ).toBe(
-      "/experiments/experiment-1/runs/run-1/comparisons/comparison-1",
-    )
+    ).toBe("/comparisons/comparison-1")
   })
 
   it("renders a failed measurement error instead of an output preview", () => {
     render(
-      <MemoryRouter>
-        <MeasurementDetail
-          {...baseDetail}
-          measurement={{
-            ...baseDetail.measurement!,
-            status: "failed",
-            outputFileId: null,
-            error: "Candidate returned an invalid score.",
-          }}
-          outputArtifact={null}
-          outputContent={null}
-          onRetry={() => undefined}
-        />
-      </MemoryRouter>,
+      <ThemeProvider defaultTheme="light">
+        <MemoryRouter>
+          <MeasurementDetail
+            {...baseDetail}
+            measurement={{
+              ...baseDetail.measurement!,
+              status: "failed",
+              outputFileId: null,
+              error: "Candidate returned an invalid score.",
+            }}
+            outputArtifact={null}
+            outputContent={null}
+            onRetry={() => undefined}
+          />
+        </MemoryRouter>
+      </ThemeProvider>,
     )
 
     expect(screen.getByText("Measurement error")).toBeTruthy()
@@ -152,13 +165,15 @@ describe("measurement detail", () => {
 
   it("preserves runs-index breadcrumb origin", () => {
     render(
-      <MemoryRouter>
-        <MeasurementDetail
-          {...baseDetail}
-          breadcrumbOrigin="runs"
-          onRetry={() => undefined}
-        />
-      </MemoryRouter>,
+      <ThemeProvider defaultTheme="light">
+        <MemoryRouter>
+          <MeasurementDetail
+            {...baseDetail}
+            breadcrumbOrigin="runs"
+            onRetry={() => undefined}
+          />
+        </MemoryRouter>
+      </ThemeProvider>,
     )
 
     const breadcrumb = screen.getByRole("navigation", { name: "breadcrumb" })

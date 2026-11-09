@@ -1,12 +1,22 @@
 import { AlertCircle, FileText, RotateCcw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
+  CodeBlock,
+  CodeBlockActions,
+  CodeBlockContent,
+  CodeBlockCopyButton,
+  CodeBlockHeader,
+  CodeBlockLine,
+  CodeBlockTitle,
+} from "@/components/ui/code-block"
+import {
   Empty,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty"
+import { useHighlightedCode } from "@/hooks/use-highlighted-code"
 import { Skeleton } from "@/components/ui/skeleton"
 import type { Artifact } from "../types"
 
@@ -26,6 +36,41 @@ const isPreviewable = (contentType: string) =>
   contentType.includes("yaml") ||
   contentType.includes("javascript")
 
+const languageByExtension: Record<string, string> = {
+  css: "css",
+  diff: "diff",
+  htm: "html",
+  html: "html",
+  js: "javascript",
+  json: "json",
+  md: "markdown",
+  py: "python",
+  sh: "bash",
+  sql: "sql",
+  ts: "typescript",
+  tsx: "tsx",
+  xml: "html",
+  yaml: "yaml",
+  yml: "yaml",
+}
+
+const getLanguage = (artifact: Artifact | null) => {
+  if (!artifact) return "text"
+
+  const extension = artifact.filename.split(".").pop()?.toLowerCase()
+  if (extension && extension in languageByExtension) {
+    return languageByExtension[extension]
+  }
+
+  if (artifact.contentType.includes("json")) return "json"
+  if (artifact.contentType.includes("javascript")) return "javascript"
+  if (artifact.contentType.includes("yaml")) return "yaml"
+  if (artifact.contentType.includes("xml")) return "html"
+  if (artifact.contentType.includes("diff")) return "diff"
+
+  return "text"
+}
+
 export function ArtifactViewer({
   artifact,
   content,
@@ -34,6 +79,12 @@ export function ArtifactViewer({
   onRetry,
   compact = false,
 }: ArtifactViewerProps) {
+  const previewContent = typeof content === "string" ? content : ""
+  const highlightedLines = useHighlightedCode(
+    previewContent,
+    getLanguage(artifact)
+  )
+
   if (loading) {
     return <Skeleton className={compact ? "h-48 w-full" : "h-[32rem] w-full"} />
   }
@@ -68,19 +119,20 @@ export function ArtifactViewer({
   }
 
   return (
-    <div className="relative overflow-hidden rounded-md border bg-muted/20">
-      <div className="flex items-center gap-2 border-b px-3 py-2 text-xs text-muted-foreground">
+    <CodeBlock size={compact ? "sm" : "default"}>
+      <CodeBlockHeader>
         <FileText className="size-3.5" />
-        <span className="truncate">{artifact.filename}</span>
-        <span className="ml-auto shrink-0">{artifact.contentType}</span>
-      </div>
-      <pre
-        className={`max-h-[32rem] overflow-auto p-4 font-mono text-xs leading-5 whitespace-pre-wrap ${
-          compact ? "max-h-48" : ""
-        }`}
-      >
-        {content}
-      </pre>
-    </div>
+        <CodeBlockTitle>{artifact.filename}</CodeBlockTitle>
+        <span className="ml-auto shrink-0 text-xs">{artifact.contentType}</span>
+        <CodeBlockActions>
+          <CodeBlockCopyButton value={content} />
+        </CodeBlockActions>
+      </CodeBlockHeader>
+      <CodeBlockContent className="h-[20lh] overflow-hidden" wrap>
+        {highlightedLines.map((line, index) => (
+          <CodeBlockLine key={index}>{line}</CodeBlockLine>
+        ))}
+      </CodeBlockContent>
+    </CodeBlock>
   )
 }

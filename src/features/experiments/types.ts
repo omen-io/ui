@@ -96,3 +96,27 @@ export type ArtifactDownload = {
   url: string
   expiresAt: string
 }
+
+export type MeasurementDetailState = {
+  measurement: Measurement | null
+  run: Run | null
+  experiment: Experiment | null
+  variant: Variant | null
+  controlMeasurement: Measurement | null
+  controlVariant: Variant | null
+  outputArtifact: Artifact | null
+  outputContent: string | null
+  outputError: Error | null
+  comparison: Comparison | null
+  comparisonArtifact: Artifact | null
+  comparisonContent: string | null
+  comparisonError: Error | null
+  loading: boolean
+  error: Error | null
+}
+
+export type MeasurementDetailBreadcrumbOrigin = "runs" | "experiment"
+
+export type MeasurementDetailNavigationState = {
+  from: MeasurementDetailBreadcrumbOrigin
+}

@@ -4,7 +4,7 @@ import {
   CalendarDays,
   Clock3,
   Copy,
-  FileInput,
+  Link2,
   RotateCcw,
 } from "lucide-react"
 import { Link } from "react-router"
@@ -35,6 +35,11 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { StatusTag } from "@/components/ui/status-tag"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { ArtifactViewer } from "@/features/artifacts/components/artifact-viewer"
 import { HttpError } from "@/lib/http-client"
 import { RunDetailBreadcrumb } from "./run-detail-breadcrumb"
@@ -69,7 +74,7 @@ function DetailSkeleton() {
         <Skeleton className="h-8 w-80" />
         <Skeleton className="h-4 w-64" />
       </div>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 4 }, (_, index) => (
           <Skeleton className="h-24" key={index} />
         ))}
@@ -175,7 +180,7 @@ export function RunDetail({
         </Button>
       </header>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {[
           {
             label: "Started",
@@ -191,11 +196,6 @@ export function RunDetail({
             label: "Duration",
             value: formatDuration(run.startedAt, run.endedAt),
             icon: Clock3,
-          },
-          {
-            label: "Input format",
-            value: run.inputFormat.toUpperCase(),
-            icon: FileInput,
           },
         ].map(({ label, value, icon: Icon }) => (
           <Card key={label}>
@@ -292,6 +292,9 @@ export function RunDetail({
                   <TableHead>Status</TableHead>
                   <TableHead>Started</TableHead>
                   <TableHead>Ended</TableHead>
+                  <TableHead className="w-12 text-right">
+                    <span className="sr-only">Actions</span>
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -325,6 +328,34 @@ export function RunDetail({
                       </TableCell>
                       <TableCell className="whitespace-nowrap text-muted-foreground">
                         {formatDate(measurement.endedAt)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Tooltip>
+                          <TooltipTrigger
+                            render={
+                              <Link
+                                aria-label={`Open measurement ${measurement.id}`}
+                                className="inline-flex size-7 items-center justify-center text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:bg-muted focus-visible:text-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none"
+                                state={{
+                                  from:
+                                    breadcrumbOrigin === "runs"
+                                      ? "runs"
+                                      : "experiment",
+                                }}
+                                to={`/experiments/${encodeURIComponent(
+                                  run.experimentId,
+                                )}/runs/${encodeURIComponent(
+                                  run.id,
+                                )}/measurements/${encodeURIComponent(
+                                  measurement.id,
+                                )}`}
+                              />
+                            }
+                          >
+                            <Link2 aria-hidden="true" />
+                          </TooltipTrigger>
+                          <TooltipContent>Open measurement details</TooltipContent>
+                        </Tooltip>
                       </TableCell>
                     </TableRow>
                   )

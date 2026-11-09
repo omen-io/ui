@@ -61,10 +61,10 @@ that are valid for that resource's state.
 **Suggested content:**
 
 - Variant identity and callable/container image context.
-- Measurement status, timestamps, duration, output format, artifact metadata,
-  and a readable error panel when applicable.
-- Output preview for supported text formats, with download for all artifacts.
-- Links to comparisons that use this measurement.
+- Measurement status, timestamps, duration, output format, artifact metadata, artifact preview, and a readable error
+  panel when applicable.
+- Output preview for supported text formats, with download for all artifacts (this should be implemented inside the
+  reusable artifact details view).
 - Explicit unavailable states for failed measurements with no output artifact.
 
 **Navigation:** a comparison action should select the measurement as either
@@ -76,7 +76,7 @@ control or candidate and route to the comparison detail.
 
 **Primary question:** What changed between the two measurements?
 
-**Suggested content:**
+**Suggested content:**[router.tsx](app/router.tsx)
 
 - Control/candidate identity, variant names, statuses, and artifact formats.
 

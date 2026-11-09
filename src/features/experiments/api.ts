@@ -69,8 +69,10 @@ export const listVariants = (experimentId?: string, signal?: AbortSignal) =>
     { signal },
   )
 
-export const getVariant = (variantId: string) =>
-  request<Variant>(`${paths.variants}/${encodeURIComponent(variantId)}`)
+export const getVariant = (variantId: string, signal?: AbortSignal) =>
+  request<Variant>(`${paths.variants}/${encodeURIComponent(variantId)}`, {
+    signal,
+  })
 
 export const listRuns = (experimentId?: string, signal?: AbortSignal) =>
   request<{ items: Run[] }>(
@@ -80,47 +82,58 @@ export const listRuns = (experimentId?: string, signal?: AbortSignal) =>
     { signal },
   )
 
-export const getRun = (runId: string) =>
-  request<Run>(`${paths.runs}/${encodeURIComponent(runId)}`)
+export const getRun = (runId: string, signal?: AbortSignal) =>
+  request<Run>(`${paths.runs}/${encodeURIComponent(runId)}`, { signal })
 
-export const listMeasurements = (runId?: string) =>
+export const listMeasurements = (runId?: string, signal?: AbortSignal) =>
   request<{ items: Measurement[] }>(
     runId
       ? `${paths.runs}/${encodeURIComponent(runId)}/measurements`
       : paths.measurements,
+    { signal },
   )
 
-export const getMeasurement = (measurementId: string) =>
+export const getMeasurement = (measurementId: string, signal?: AbortSignal) =>
   request<Measurement>(
     `${paths.measurements}/${encodeURIComponent(measurementId)}`,
+    { signal },
   )
 
-export const listComparisons = () =>
-  request<{ items: Comparison[] }>(paths.comparisons)
+export const listComparisons = (signal?: AbortSignal) =>
+  request<{ items: Comparison[] }>(paths.comparisons, { signal })
 
-export const getComparison = (comparisonId: string) =>
+export const getComparison = (comparisonId: string, signal?: AbortSignal) =>
   request<Comparison>(
     `${paths.comparisons}/${encodeURIComponent(comparisonId)}`,
+    { signal },
   )
 
 export const listArtifacts = () =>
   request<{ items: Artifact[] }>(paths.artifacts)
 
-export const getArtifact = (artifactId: string) =>
-  request<Artifact>(`${paths.artifacts}/${encodeURIComponent(artifactId)}`)
+export const getArtifact = (artifactId: string, signal?: AbortSignal) =>
+  request<Artifact>(`${paths.artifacts}/${encodeURIComponent(artifactId)}`, {
+    signal,
+  })
 
 export const listContainerImages = () =>
   request<{ items: ContainerImage[] }>(paths.containerImages)
 
-export const getContainerImage = (containerImageId: string) =>
+export const getContainerImage = (
+  containerImageId: string,
+  signal?: AbortSignal,
+) =>
   request<ContainerImage>(
     `${paths.containerImages}/${encodeURIComponent(containerImageId)}`,
+    { signal },
   )
 
 export function getArtifactDownloadUrl(
   artifactId: string,
+  signal?: AbortSignal,
 ): Promise<ArtifactDownload> {
   return request<ArtifactDownload>(
-    `/api/v1/artifacts/${encodeURIComponent(artifactId)}/presigned-url`,
+    `${paths.artifacts}/${encodeURIComponent(artifactId)}/presigned-url`,
+    { signal },
   )
 }

@@ -72,11 +72,17 @@ describe("run detail", () => {
     expect(screen.getAllByText("run-1")).toHaveLength(1)
     expect(screen.getAllByText("Control")).toHaveLength(2)
     expect(screen.getByText("ranking.control")).toBeTruthy()
+    expect(screen.queryByText("Input format")).toBeNull()
     expect(
       screen.getByRole("button", { name: /open input file/i }).getAttribute(
         "href",
       ),
     ).toBe("/artifacts/artifact-1")
+    expect(
+      screen.getByRole("link", { name: /open measurement measurement-1/i }).getAttribute(
+        "href",
+      ),
+    ).toBe("/experiments/experiment-1/runs/run-1/measurements/measurement-1")
   })
 
   it("renders the runs breadcrumb when entered from the runs index", () => {

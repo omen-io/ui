@@ -64,8 +64,8 @@ src/
 ```
 
 Routes live under `src/app/routes` and compose feature-owned UI. The current
-routes are `/` (dashboard), `/experiments`, `/runs`, `/runs/new`,
-`/settings`, and a not-found fallback. The experiments and runs pages are
+routes are `/` (dashboard), `/experiments`, `/runs`, `/runs/new`, and a
+not-found fallback. The experiments and runs pages are
 fixture-backed list workflows; `/runs/new` is currently a destination
 placeholder for the future manual run form.
 

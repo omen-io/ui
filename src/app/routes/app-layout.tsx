@@ -1,4 +1,4 @@
-import {BarChart3, Play, Settings, TestTubes} from "lucide-react"
+import {BarChart3, Play, TestTubes} from "lucide-react"
 import {NavLink, Outlet, useLocation} from "react-router"
 
 import {
@@ -20,7 +20,6 @@ const navigationItems = [
     {label: "Dashboard", to: "/", icon: BarChart3},
     {label: "Experiments", to: "/experiments", icon: TestTubes},
     {label: "Runs", to: "/runs", icon: Play},
-    {label: "Settings", to: "/settings", icon: Settings},
 ]
 
 export default function AppLayout() {
@@ -68,9 +67,7 @@ export default function AppLayout() {
                             ? "Experiments"
                             : location.pathname.startsWith("/runs")
                               ? "Runs"
-                              : location.pathname === "/settings"
-                                ? "Settings"
-                                : "Dashboard"}
+                              : "Dashboard"}
                     </div>
                 </header>
                 <Outlet/>

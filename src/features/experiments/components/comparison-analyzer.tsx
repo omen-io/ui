@@ -154,6 +154,15 @@ export function ComparisonAnalyzer({
 
   if (!comparison || !run || !experiment) return null
 
+  const measurementId = candidateMeasurement?.id ?? null
+  const measurementPath = measurementId
+    ? `/experiments/${encodeURIComponent(
+        experiment.id,
+      )}/runs/${encodeURIComponent(run.id)}/measurements/${encodeURIComponent(
+        measurementId,
+      )}`
+    : undefined
+
   return (
     <div className="space-y-6">
       <Breadcrumb>
@@ -172,7 +181,21 @@ export function ComparisonAnalyzer({
                 />
               }
             >
-              {experiment.name}
+              {experiment.id}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              render={
+                <Link
+                  to={`/runs?filter=${encodeURIComponent(
+                    `experiment:${experiment.name}`,
+                  )}`}
+                />
+              }
+            >
+              Runs
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -181,13 +204,31 @@ export function ComparisonAnalyzer({
               render={
                 <Link
                   to={`/experiments/${encodeURIComponent(
-                    experiment.id
+                    experiment.id,
                   )}/runs/${encodeURIComponent(run.id)}`}
                 />
               }
             >
               {run.id}
             </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <span>Measurements</span>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            {measurementPath ? (
+              <BreadcrumbLink render={<Link to={measurementPath} />}>
+                {measurementId}
+              </BreadcrumbLink>
+            ) : (
+              <BreadcrumbPage>Measurement unavailable</BreadcrumbPage>
+            )}
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <span>Comparisons</span>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

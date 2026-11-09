@@ -13,7 +13,7 @@ spot regressions and understand what changed.
 
 The project is currently a frontend foundation: the dashboard is the primary
 working experience, while the Experiments and Runs pages provide
-fixture-backed list workflows and Settings remains a lightweight placeholder.
+fixture-backed list workflows.
 The UI can run
 against deterministic local fixtures today and is shaped to connect to a Go
 API later without changing feature consumers.

@@ -115,6 +115,33 @@ const analyzerState: ComparisonAnalyzerState = {
 }
 
 describe("comparison analyzer", () => {
+  it("renders the canonical relationship breadcrumb", () => {
+    render(
+      <ThemeProvider defaultTheme="light">
+        <MemoryRouter>
+          <ComparisonAnalyzer {...analyzerState} onRetry={() => undefined} />
+        </MemoryRouter>
+      </ThemeProvider>,
+    )
+
+    expect(
+      screen.getByRole("navigation", { name: "breadcrumb" }).textContent,
+    ).toContain(
+      "Experimentsexperiment-1Runsrun-1Measurementsmeasurement-candidateComparisonscomparison-1",
+    )
+    expect(screen.getByText("experiment-1").closest("a")?.getAttribute("href")).toBe(
+      "/experiments/experiment-1",
+    )
+    expect(screen.getByText("Runs").closest("a")?.getAttribute("href")).toBe(
+      "/runs?filter=experiment%3ACheckout%20ranking",
+    )
+    expect(
+      screen.getByText("measurement-candidate").closest("a")?.getAttribute("href"),
+    ).toBe(
+      "/experiments/experiment-1/runs/run-1/measurements/measurement-candidate",
+    )
+  })
+
   it("renders the diff tab and relationship-resolved output panels", async () => {
     render(
       <ThemeProvider defaultTheme="light">

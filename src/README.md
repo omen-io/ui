@@ -29,6 +29,7 @@ The public build-time variables are:
 | --- | --- |
 | `VITE_API_BASE_URL` | Base URL used by the shared HTTP client. |
 | `VITE_USE_FIXTURES` | Explicit `true`/`false` switch for browser fixtures. |
+| `VITE_API_ACCESS_TOKEN` | Optional access token used by the browser HTTP client. |
 
 Both variables are public. Missing URLs and values other than the literal
 strings `true` or `false` fail during startup; there is no silent fallback.

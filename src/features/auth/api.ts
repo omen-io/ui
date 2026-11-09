@@ -1,4 +1,5 @@
 import { request } from "@/lib/http-client"
+import {setAccessToken} from "./session"
 import type { CurrentUser, LoginRequest, Role, TokenResponse } from "./types"
 
 const paths = {
@@ -8,14 +9,20 @@ const paths = {
   roles: "/api/v1/auth/roles",
 } as const
 
-export const login = (credentials: LoginRequest) =>
-  request<TokenResponse>(paths.login, {
+export const login = async (credentials: LoginRequest) => {
+  const response = await request<TokenResponse>(paths.login, {
     method: "POST",
     body: credentials,
   })
+  setAccessToken(response.accessToken)
+  return response
+}
 
-export const refreshToken = () =>
-  request<TokenResponse>(paths.refresh, { method: "POST" })
+export const refreshToken = async () => {
+  const response = await request<TokenResponse>(paths.refresh, { method: "POST" })
+  setAccessToken(response.accessToken)
+  return response
+}
 
 export const getCurrentUser = () => request<CurrentUser>(paths.me)
 

@@ -10,6 +10,7 @@ import ArtifactDetailPage from "@/app/routes/artifacts/detail"
 import NewRunPage from "@/app/routes/runs/new"
 import RunsPage from "@/app/routes/runs"
 import ComparisonAnalyzerPage from "@/app/routes/comparisons"
+import ProfilePage from "@/app/routes/profile"
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
       { path: "artifacts/:artifactId", Component: ArtifactDetailPage },
       { path: "comparisons/:comparisonId", Component: ComparisonAnalyzerPage },
       { path: "runs/new", Component: NewRunPage },
+      { path: "profile", Component: ProfilePage },
       { path: "*", Component: NotFoundPage },
     ],
   },

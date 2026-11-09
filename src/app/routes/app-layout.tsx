@@ -1,9 +1,10 @@
-import {BarChart3, Play, TestTubes} from "lucide-react"
+import {BarChart3, CircleUserRound, Play, TestTubes} from "lucide-react"
 import {NavLink, Outlet, useLocation} from "react-router"
 
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
@@ -58,16 +59,32 @@ export default function AppLayout() {
                         </SidebarGroupContent>
                     </SidebarGroup>
                 </SidebarContent>
+                <SidebarFooter className="border-t">
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton
+                                isActive={location.pathname.startsWith("/profile")}
+                                render={<NavLink to="/profile"/>}
+                                tooltip="Profile"
+                            >
+                                <CircleUserRound/>
+                                <span>Profile</span>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarFooter>
             </Sidebar>
             <SidebarInset>
                 <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4">
                     <SidebarTrigger/>
                     <div className="text-sm font-medium">
-                        {location.pathname.startsWith("/experiments")
-                            ? "Experiments"
-                            : location.pathname.startsWith("/runs")
-                              ? "Runs"
-                              : "Dashboard"}
+                        {location.pathname.startsWith("/profile")
+                            ? "Profile"
+                            : location.pathname.startsWith("/experiments")
+                              ? "Experiments"
+                              : location.pathname.startsWith("/runs")
+                                ? "Runs"
+                                : "Dashboard"}
                     </div>
                 </header>
                 <Outlet/>

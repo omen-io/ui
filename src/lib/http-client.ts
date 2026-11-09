@@ -25,6 +25,12 @@ export async function request<T>(
   const { responseType = "auto", ...fetchOptions } = options
   const url = new URL(path, import.meta.env.VITE_API_BASE_URL).toString()
   const headers = new Headers(fetchOptions.headers)
+  const accessToken = localStorage.getItem("omen_access_token") ??
+    import.meta.env.VITE_API_ACCESS_TOKEN
+
+  if (accessToken) {
+    headers.set("Authorization", `Bearer ${accessToken}`)
+  }
 
   if (options.body !== undefined) {
     headers.set("Content-Type", "application/json")

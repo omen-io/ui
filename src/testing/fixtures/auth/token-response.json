@@ -1,5 +1,5 @@
 {
-  "accessToken": "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDEiLCJpc3MiOiJvbWVuLWFwaSIsImF1ZCI6Im9tZW4tdWkiLCJpYXQiOjE4OTM0NTYwMDAsImV4cCI6MTg5MzQ1OTYwMCwiZW50aXRsZW1lbnRzIjpbImRhc2hib2FyZDpyZWFkIiwiZXhwZXJpbWVudHM6cmVhZCIsIm1lYXN1cmVtZW50czpyZWFkIiwic2V0dGluZ3M6d3JpdGUiXX0.Zml4dHVyZS1zaWduYXR1cmU",
+  "accessToken": "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDEiLCJpc3MiOiJvbWVuLWZpeHR1cmUiLCJleHAiOjQxMDEzMzYwMDAwMDB9.fixture-signature",
   "tokenType": "Bearer",
   "expiresIn": 3600
 }

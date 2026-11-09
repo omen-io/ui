@@ -13,4 +13,5 @@ if (!apiBaseUrl) {
 export const env = {
   apiBaseUrl: apiBaseUrl.endsWith("/") ? apiBaseUrl.slice(0, -1) : apiBaseUrl,
   useFixtures: parseBoolean("VITE_USE_FIXTURES", import.meta.env.VITE_USE_FIXTURES),
+  apiAccessToken: import.meta.env.VITE_API_ACCESS_TOKEN ?? null,
 } as const

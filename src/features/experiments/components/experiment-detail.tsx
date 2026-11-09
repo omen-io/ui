@@ -6,6 +6,7 @@ import {
   Copy,
   FlaskConical,
   GitBranch,
+  Link2,
   Play,
   RotateCcw,
   XCircle,
@@ -52,6 +53,11 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { StatusTag } from "@/components/ui/status-tag"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { HttpError } from "@/lib/http-client"
 import type { Experiment, Run, Variant } from "../types"
 
@@ -241,19 +247,16 @@ export function ExperimentDetail({
                     Started
                   </TableHead>
                   <TableHead className="hidden md:table-cell">Ended</TableHead>
+                  <TableHead className="w-12 text-right">
+                    <span className="sr-only">Actions</span>
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {recentRuns.map((run) => (
                   <TableRow className="h-10" key={run.id}>
                     <TableCell className="font-mono text-[11px]">
-                      <Link
-                        className="underline-offset-4 hover:underline"
-                        to={`/experiments/${encodeURIComponent(experiment.id)}/runs/${encodeURIComponent(run.id)}`}
-                        state={{ from: "experiment" }}
-                      >
-                        {run.id.slice(0, 8)}…
-                      </Link>
+                      {run.id.slice(0, 8)}…
                     </TableCell>
                     <TableCell>
                       <StatusTag status={run.status} />
@@ -263,6 +266,23 @@ export function ExperimentDetail({
                     </TableCell>
                     <TableCell className="hidden text-muted-foreground md:table-cell">
                       {formatDate(run.endedAt)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Tooltip>
+                        <TooltipTrigger
+                          render={
+                            <Link
+                              aria-label={`Open run ${run.id}`}
+                              className="inline-flex size-7 items-center justify-center text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:bg-muted focus-visible:text-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none"
+                              state={{ from: "experiment" }}
+                              to={`/experiments/${encodeURIComponent(experiment.id)}/runs/${encodeURIComponent(run.id)}`}
+                            />
+                          }
+                        >
+                          <Link2 aria-hidden="true" />
+                        </TooltipTrigger>
+                        <TooltipContent>Open run details</TooltipContent>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -276,7 +296,7 @@ export function ExperimentDetail({
                     >
                       <TableCell
                         className="text-sm text-muted-foreground"
-                        colSpan={4}
+                        colSpan={5}
                       >
                         {recentRuns.length === 0 && index === 0
                           ? "No runs have been recorded yet."

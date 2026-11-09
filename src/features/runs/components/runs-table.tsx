@@ -1,4 +1,4 @@
-import { AlertCircle, RotateCcw, Play } from "lucide-react"
+import { AlertCircle, Link2, Play, RotateCcw } from "lucide-react"
 import { StatusTag } from "@/components/ui/status-tag"
 import { Link } from "react-router"
 import { Button } from "@/components/ui/button"
@@ -19,6 +19,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import type { RunListItem } from "../types"
 
 const formatDate = (value: string | null) =>
@@ -102,28 +107,17 @@ export function RunsTable({
           <TableHead>Status</TableHead>
           <TableHead>Started at</TableHead>
           <TableHead>Ended at</TableHead>
+          <TableHead className="w-12 text-right">
+            <span className="sr-only">Actions</span>
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {items.map((run) => (
           <TableRow key={run.id}>
-            <TableCell className="font-medium">
-              <Link
-                className="hover:underline"
-                to={`/experiments/${run.experimentId}/runs/${run.id}`}
-                state={{ from: "runs" }}
-              >
-                {run.experimentName}
-              </Link>
-            </TableCell>
+            <TableCell className="font-medium">{run.experimentName}</TableCell>
             <TableCell className="font-mono text-[11px] text-muted-foreground">
-              <Link
-                className="hover:text-primary hover:underline"
-                to={`/experiments/${run.experimentId}/runs/${run.id}`}
-                state={{ from: "runs" }}
-              >
-                {run.id}
-              </Link>
+              {run.id}
             </TableCell>
             <TableCell className="text-muted-foreground">
               {run.experimentSource}
@@ -137,10 +131,27 @@ export function RunsTable({
             <TableCell className="text-muted-foreground">
               {formatDate(run.endedAt)}
             </TableCell>
+            <TableCell className="text-right">
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <Link
+                      aria-label={`Open run ${run.id}`}
+                      className="inline-flex size-7 items-center justify-center text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:bg-muted focus-visible:text-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none"
+                      state={{ from: "runs" }}
+                      to={`/experiments/${encodeURIComponent(run.experimentId)}/runs/${encodeURIComponent(run.id)}`}
+                    />
+                  }
+                >
+                  <Link2 aria-hidden="true" />
+                </TooltipTrigger>
+                <TooltipContent>Open run details</TooltipContent>
+              </Tooltip>
+            </TableCell>
           </TableRow>
         ))}
         <PaginatedTableSpacerRows
-          columnCount={6}
+          columnCount={7}
           itemCount={items.length}
           pageSize={pageSize}
         />

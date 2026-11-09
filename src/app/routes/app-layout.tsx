@@ -30,7 +30,7 @@ export default function AppLayout() {
         <SidebarProvider>
             <Sidebar>
                 <SidebarHeader className="border-b">
-                    <div className="flex h-8 items-center px-2 text-sm font-semibold">
+                    <div className="flex h-8 items-center px-2 text-sm font-bold text-primary">
                         Omen
                     </div>
                 </SidebarHeader>

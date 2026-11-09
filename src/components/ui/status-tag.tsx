@@ -12,10 +12,13 @@ export const STATUS_VALUES = [
 export type Status = (typeof STATUS_VALUES)[number]
 
 export const STATUS_TAGS: Record<Status, { label: string; color: string }> = {
-  completed: { label: "COMP", color: "#4d8a68" },
-  completed_with_differences: { label: "DIFF", color: "#b8793d" },
-  in_progress: { label: "PEND", color: "#b38a3d" },
-  failed: { label: "FAIL", color: "#b45b5b" },
+  completed: { label: "COMP", color: "var(--status-completed)" },
+  completed_with_differences: {
+    label: "DIFF",
+    color: "var(--status-differences)",
+  },
+  in_progress: { label: "PEND", color: "var(--status-pending)" },
+  failed: { label: "FAIL", color: "var(--status-failed)" },
 }
 
 export const isStatus = (value: string): value is Status =>

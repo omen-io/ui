@@ -42,13 +42,12 @@ that are valid for that resource's state.
 **Suggested content:**
 
 - Run status banner, lifecycle timestamps, duration, input artifact metadata,
-  and a stable run ID.
-- Measurement table grouped by variant, with status, duration, output artifact,
-  and error details.
-- A clear distinction between not-started, in-progress, failed, and completed
+  input artifact preview, and a stable run ID.
+- Measurement table with id, variant, status, lifecycle timestamps and duration.
+- A clear distinction between in-progress, completed with differences, failed, and completed
   measurements.
 - Retry or refresh affordances only when the backend contract supports them.
-- Links from each measurement to its detail page and back to the experiment.
+- Links from each measurement to its detail page and back to the run.
 
 **Navigation:** selecting a measurement goes to
 `/experiments/:experimentId/runs/:runId/measurements/:measurementId`.
@@ -84,6 +83,7 @@ control or candidate and route to the comparison detail.
 Run and measurement status tags use the shared standard: `completed` renders as
 `COMP` in green, `completed_with_differences` as `DIFF` in orange,
 `in_progress` as `PEND` in yellow, and `failed` as `FAIL` in red.
+
 - Diff viewer with syntax-aware rendering where possible and a plain-text
   fallback for unsupported formats.
 - Summary metrics for additions, removals, changed values, and domain-specific

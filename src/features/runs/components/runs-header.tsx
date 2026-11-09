@@ -3,7 +3,6 @@ import { Play } from "lucide-react"
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb"
@@ -14,9 +13,6 @@ export function RunsHeader() {
     <>
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink render={<Link to="/" />}>Home</BreadcrumbLink>
-          </BreadcrumbItem>
           <BreadcrumbItem>
             <BreadcrumbPage>Runs</BreadcrumbPage>
           </BreadcrumbItem>

@@ -82,8 +82,8 @@ function DetailSkeleton() {
         <Skeleton className="h-8 w-80" />
         <Skeleton className="h-4 w-64" />
       </div>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {Array.from({ length: 4 }, (_, index) => (
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {Array.from({ length: 5 }, (_, index) => (
           <Skeleton className="h-24" key={index} />
         ))}
       </div>
@@ -149,12 +149,12 @@ export function ExperimentDetail({
 
   if (!experiment) return null
 
-  const completedRuns = runs.filter(
-    (run) =>
-      run.status === "completed" || run.status === "completed_with_differences"
+  const completedRuns = runs.filter((run) => run.status === "completed").length
+  const pendingRuns = runs.filter((run) => run.status === "in_progress").length
+  const differenceRuns = runs.filter(
+    (run) => run.status === "completed_with_differences"
   ).length
   const failedRuns = runs.filter((run) => run.status === "failed").length
-  const activeRuns = runs.filter((run) => run.status === "in_progress").length
   const recentRuns = runs.slice(0, 5)
   const copyId = async () => {
     await navigator.clipboard.writeText(experiment.id)
@@ -167,17 +167,13 @@ export function ExperimentDetail({
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink render={<Link to="/" />}>Home</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
             <BreadcrumbLink render={<Link to="/experiments" />}>
               Experiments
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{experiment.name}</BreadcrumbPage>
+            <BreadcrumbPage>{experiment.id}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -191,7 +187,7 @@ export function ExperimentDetail({
             {experiment.name}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {experiment.source} · Follow recent runs and configured variants.
+            {experiment.source} - {experiment.id}
           </p>
         </div>
         <Button
@@ -205,12 +201,13 @@ export function ExperimentDetail({
         </Button>
       </header>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         {[
           { label: "Total runs", value: runs.length, icon: Play },
           { label: "Completed", value: completedRuns, icon: CheckCircle2 },
+          { label: "Pending", value: pendingRuns, icon: Clock3 },
+          { label: "Differences", value: differenceRuns, icon: AlertCircle },
           { label: "Failed", value: failedRuns, icon: XCircle },
-          { label: "In progress", value: activeRuns, icon: Clock3 },
         ].map(({ label, value, icon: Icon }) => (
           <Card key={label} size="sm">
             <CardContent className="flex items-center justify-between">
@@ -253,6 +250,7 @@ export function ExperimentDetail({
                       <Link
                         className="underline-offset-4 hover:underline"
                         to={`/experiments/${encodeURIComponent(experiment.id)}/runs/${encodeURIComponent(run.id)}`}
+                        state={{ from: "experiment" }}
                       >
                         {run.id.slice(0, 8)}…
                       </Link>

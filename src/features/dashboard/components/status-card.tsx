@@ -23,6 +23,10 @@ export function StatusCard({
   selectedStatuses,
   onToggle,
 }: StatusCardProps) {
+  const orderedData = [...data].sort(
+    (a, b) => STATUSES.indexOf(a.name) - STATUSES.indexOf(b.name)
+  )
+
   return (
     <Card>
       <CardHeader>
@@ -33,7 +37,7 @@ export function StatusCard({
       </CardHeader>
       <CardContent className="grid gap-4 sm:grid-cols-[minmax(180px,0.9fr)_1fr]">
         <EvilPieChart
-          data={data}
+          data={orderedData}
           config={STATUS_CHART_CONFIG}
           dataKey="value"
           nameKey="name"

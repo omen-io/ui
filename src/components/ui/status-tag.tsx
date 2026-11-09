@@ -4,8 +4,8 @@ import type { ReactNode } from "react"
 
 export const STATUS_VALUES = [
   "completed",
-  "completed_with_differences",
   "in_progress",
+  "completed_with_differences",
   "failed",
 ] as const
 

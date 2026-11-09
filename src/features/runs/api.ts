@@ -1,5 +1,11 @@
 import { request } from "@/lib/http-client"
-import type { RunListResponse } from "./types"
+import type {
+  RunDetailState,
+  RunExperiment,
+  RunListResponse,
+  RunMeasurement,
+  RunVariant,
+} from "./types"
 
 export type RunOrderBy = "startedAt" | "endedAt" | "experimentName"
 export type OrderDirection = "asc" | "desc"
@@ -32,3 +38,26 @@ export const listRuns = ({
     signal,
   })
 }
+
+export const getRun = (runId: string, signal?: AbortSignal) =>
+  request<RunDetailState["run"]>(`/api/v1/runs/${encodeURIComponent(runId)}`, {
+    signal,
+  })
+
+export const getRunExperiment = (experimentId: string, signal?: AbortSignal) =>
+  request<RunExperiment>(
+    `/api/v1/experiments/${encodeURIComponent(experimentId)}`,
+    { signal },
+  )
+
+export const listRunMeasurements = (runId: string, signal?: AbortSignal) =>
+  request<{ items: RunMeasurement[] }>(
+    `/api/v1/runs/${encodeURIComponent(runId)}/measurements`,
+    { signal },
+  )
+
+export const listRunVariants = (experimentId: string, signal?: AbortSignal) =>
+  request<{ items: RunVariant[] }>(
+    `/api/v1/experiments/${encodeURIComponent(experimentId)}/variants`,
+    { signal },
+  )

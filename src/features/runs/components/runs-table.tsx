@@ -1,5 +1,6 @@
 import { AlertCircle, RotateCcw, Play } from "lucide-react"
 import { StatusTag } from "@/components/ui/status-tag"
+import { Link } from "react-router"
 import { Button } from "@/components/ui/button"
 import { PaginatedTableSpacerRows } from "@/components/ui/paginated-table"
 import {
@@ -106,9 +107,23 @@ export function RunsTable({
       <TableBody>
         {items.map((run) => (
           <TableRow key={run.id}>
-            <TableCell className="font-medium">{run.experimentName}</TableCell>
+            <TableCell className="font-medium">
+              <Link
+                className="hover:underline"
+                to={`/experiments/${run.experimentId}/runs/${run.id}`}
+                state={{ from: "runs" }}
+              >
+                {run.experimentName}
+              </Link>
+            </TableCell>
             <TableCell className="font-mono text-[11px] text-muted-foreground">
-              {run.id}
+              <Link
+                className="hover:text-primary hover:underline"
+                to={`/experiments/${run.experimentId}/runs/${run.id}`}
+                state={{ from: "runs" }}
+              >
+                {run.id}
+              </Link>
             </TableCell>
             <TableCell className="text-muted-foreground">
               {run.experimentSource}

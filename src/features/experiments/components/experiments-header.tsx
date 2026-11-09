@@ -1,8 +1,6 @@
-import { Link } from "react-router"
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb"
@@ -12,9 +10,6 @@ export function ExperimentsHeader() {
     <>
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink render={<Link to="/" />}>Home</BreadcrumbLink>
-          </BreadcrumbItem>
           <BreadcrumbItem>
             <BreadcrumbPage>Experiments</BreadcrumbPage>
           </BreadcrumbItem>

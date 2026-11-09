@@ -21,13 +21,13 @@ export const STATUS_CHART_CONFIG = {
     label: STATUS_LABELS.completed,
     colors: { light: [STATUS_COLORS.completed] },
   },
-  completed_with_differences: {
-    label: STATUS_LABELS.completed_with_differences,
-    colors: { light: [STATUS_COLORS.completed_with_differences] },
-  },
   in_progress: {
     label: STATUS_LABELS.in_progress,
     colors: { light: [STATUS_COLORS.in_progress] },
+  },
+  completed_with_differences: {
+    label: STATUS_LABELS.completed_with_differences,
+    colors: { light: [STATUS_COLORS.completed_with_differences] },
   },
   failed: {
     label: STATUS_LABELS.failed,

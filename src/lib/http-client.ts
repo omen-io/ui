@@ -15,27 +15,30 @@ export class HttpError extends Error {
 
 type RequestOptions = Omit<RequestInit, "body"> & {
   body?: unknown
+  responseType?: "auto" | "text"
 }
 
 export async function request<T>(
   path: string,
   options: RequestOptions = {},
 ): Promise<T> {
+  const { responseType = "auto", ...fetchOptions } = options
   const url = new URL(path, import.meta.env.VITE_API_BASE_URL).toString()
-  const headers = new Headers(options.headers)
+  const headers = new Headers(fetchOptions.headers)
 
   if (options.body !== undefined) {
     headers.set("Content-Type", "application/json")
   }
 
   const response = await fetch(url, {
-    ...options,
+    ...fetchOptions,
     body: options.body === undefined ? undefined : JSON.stringify(options.body),
     headers,
   })
 
   const contentType = response.headers.get("content-type") ?? ""
-  const details = contentType.includes("application/json")
+  const details =
+    responseType !== "text" && contentType.includes("application/json")
     ? await response.json()
     : await response.text()
 
